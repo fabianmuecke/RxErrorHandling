@@ -9,18 +9,17 @@ import RxSwift
 
 protocol TreatableType: ObservableConvertibleType {
     associatedtype Failure where Failure: Error
-
-    func asSafeObservable() -> Observable<Result<Element, Failure>>
+    associatedtype Success where Element == Result<Success, Failure>
 }
 
 extension TreatableType {
-    public func map<NewElement>(_ transform: @escaping (Element) -> NewElement) -> Treatable<NewElement, Failure> {
-        Treatable(raw: asSafeObservable().map { $0.map(transform) })
+    public func map<NewSuccess>(_ transform: @escaping (Success) -> NewSuccess) -> Treatable<NewSuccess, Failure> {
+        Treatable(raw: asObservable().map { $0.map(transform) })
     }
 
-    public func map<NewFailure>(_ transform: @escaping (Element) throws -> NewFailure,
-                                catchError: @escaping (Error) -> Failure) -> Treatable<NewFailure, Failure> {
-        Treatable(raw: asSafeObservable().map {
+    public func map<NewSuccess>(_ transform: @escaping (Success) throws -> NewSuccess,
+                                catchError: @escaping (Error) -> Failure) -> Treatable<NewSuccess, Failure> {
+        Treatable(raw: asObservable().map {
             switch $0 {
             case let .success(element):
                 do {
@@ -34,19 +33,19 @@ extension TreatableType {
         })
     }
 
-    public func map<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>)
-        -> Treatable<NewElement, Failure> {
-        Treatable(raw: asSafeObservable().map { $0.flatMap(transform) })
+    public func map<NewSuccess>(_ transform: @escaping (Success) -> Result<NewSuccess, Failure>)
+        -> Treatable<NewSuccess, Failure> {
+        Treatable(raw: asObservable().map { $0.flatMap(transform) })
     }
 
-    public func map<NewElement, NewFailure>(
-        _ transform: @escaping (Result<Element, Failure>) -> Result<NewElement, NewFailure>)
-        -> Treatable<NewElement, NewFailure> {
-        Treatable(raw: asSafeObservable().map { transform($0) })
+    public func map<NewSuccess, NewFailure>(
+        _ transform: @escaping (Element) -> Result<NewSuccess, NewFailure>)
+        -> Treatable<NewSuccess, NewFailure> {
+        Treatable(raw: asObservable().map { transform($0) })
     }
 
-    public func mapError<Result>(_ transform: @escaping (Failure) -> Result) -> Treatable<Element, Result> {
-        Treatable(raw: asSafeObservable().map {
+    public func mapError<NewFailure>(_ transform: @escaping (Failure) -> NewFailure) -> Treatable<Success, NewFailure> {
+        Treatable(raw: asObservable().map {
             $0.mapError(transform)
         })
     }
