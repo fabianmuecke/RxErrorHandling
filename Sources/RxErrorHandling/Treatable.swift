@@ -7,8 +7,8 @@
 
 import RxSwift
 
-public struct Treatable<Success, Failure: Error>: TreatableType {
-    public typealias Element = Result<Success, Failure>
+public struct Treatable<Success, Failure: Error>: TreatableConvertibleType {
+    public typealias Element = Success
 
     public enum Completion {
         case finished
@@ -22,24 +22,17 @@ public struct Treatable<Success, Failure: Error>: TreatableType {
     }
 
     init(source: Observable<Success>, errorTransform: @escaping (Error) -> Failure) {
-        self.source = source.map { .success($0) }.catchError { error in
-            .just(.failure(errorTransform(error)))
-        }
-    }
-
-    public func unsafeFromSuccess() -> Observable<Success> {
-        source.flatMap { element -> Observable<Success> in
-            switch element {
-            case let .success(result):
-                return .just(result)
-            case let .failure(error):
-                return .error(error)
-            }
+        self.source = source.catchError { error in
+            .error(errorTransform(error))
         }
     }
 
     public func asObservable() -> Observable<Element> {
         source
+    }
+
+    public func asObservableResult() -> Observable<Result<Success, Failure>> {
+        asObservable().map(Result<Success, Failure>.success).catchError { .just(.failure($0 as! Failure)) }
     }
 }
 
@@ -53,43 +46,42 @@ extension Treatable {
     }
 
     public static func just(_ element: Success) -> Self {
-        .init(raw: .just(.success(element)))
+        .init(raw: .just(element))
     }
 
     public static func error(_ error: Failure) -> Self {
-        .init(raw: .just(.failure(error)))
+        .init(raw: .error(error))
     }
 
     public static func deferred(_ observableFactory: @escaping () -> Self) -> Self {
-        return .init(raw: Observable.deferred {
-            observableFactory()
-                .asObservable()
-            })
+        .init(raw: Observable.deferred {
+            observableFactory().asObservable()
+        })
     }
 
     public static func of(_ elements: Success...) -> Self {
-        return .init(raw: Observable.from(elements.map { .success($0) }))
+        .init(raw: Observable.from(elements))
     }
 }
 
-extension Treatable: ObservableType {
-    public func subscribe<Observer>(_ observer: Observer) -> Disposable where
+extension Treatable {
+    public func treat<Observer>(_ observer: Observer) -> Disposable where
         Observer: ObserverType,
-        Element == Observer.Element {
-        asObservable().subscribe(observer)
+        Observer.Element == Result<Success, Failure> {
+        asObservableResult().subscribe(observer)
     }
 
-    public func subscribe<Observer>(_ observer: Observer) -> Disposable where
+    public func treat<Observer>(_ observer: Observer) -> Disposable where
         Observer: ObserverType,
         Success == Observer.Element,
         Failure == Never {
-        unsafeFromSuccess().subscribe(observer)
+        asObservable().subscribe(observer)
     }
 
-    public func subscribe(onNext: @escaping (Success) -> Void,
-                          onCompleted: @escaping (Completion) -> Void,
-                          onDisposed: (() -> Void)? = nil) -> Disposable {
-        unsafeFromSuccess()
+    public func treat(onNext: @escaping (Success) -> Void,
+                      onCompleted: @escaping (Completion) -> Void,
+                      onDisposed: (() -> Void)? = nil) -> Disposable {
+        asObservable()
             .subscribe(onNext: { onNext($0) },
                        onError: { onCompleted(.failure($0 as! Failure)) },
                        onCompleted: { onCompleted(.finished) },
