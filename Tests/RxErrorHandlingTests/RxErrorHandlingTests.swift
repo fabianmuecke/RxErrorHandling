@@ -23,7 +23,7 @@ final class RxErrorHandlingTests: QuickSpec {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
-                        let treatable = source.asTreatable(catchError: { anyError -> TestError in
+                        let treatable = source.asTreatable(mapError: { anyError -> TestError in
                             switch anyError {
                             case InitialError.someExternalError:
                                 return .some
@@ -54,7 +54,7 @@ final class RxErrorHandlingTests: QuickSpec {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
-                        let treatable = source.asTreatable(catchError: { anyError -> TestError in
+                        let treatable = source.asTreatable(mapError: { anyError -> TestError in
                             switch anyError {
                             case InitialError.someExternalError:
                                 return .some

@@ -31,16 +31,16 @@ extension TreatableConvertibleType {
      Projects each element of an observable sequence into a new form.
 
      - parameter transform: A transform function to apply to each source element.
-     - parameter catchError: A transform function to apply to occurring errors.
+     - parameter mapError: A transform function to apply to occurring errors.
      - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
      */
     public func map<NewElement>(_ transform: @escaping (Element) throws -> NewElement,
-                                catchError: @escaping (Error) -> Failure) -> Treatable<NewElement, Failure> {
+                                mapError: @escaping (Error) -> Failure) -> Treatable<NewElement, Failure> {
         Treatable(raw: asObservable().flatMap { (element: Element) -> Observable<NewElement> in
             do {
                 return .just(try transform(element))
             } catch {
-                return .error(catchError(error))
+                return .error(mapError(error))
             }
         })
     }
@@ -110,12 +110,12 @@ extension TreatableConvertibleType {
      Projects each element of an observable sequence into an optional form and filters all optional results.
 
      - parameter transform: A transform function to apply to each source element and which returns an element or nil.
-     - parameter catchError: A transform function to apply to occurring errors and which returns a failure or nil.
+     - parameter mapError: A transform function to apply to occurring errors and which returns a failure or nil.
      - returns: An observable sequence whose elements are the result of filtering the transform function for each element of the source.
 
      */
     public func compactMap<NewElement>(_ transform: @escaping (Element) throws -> NewElement?,
-                                       catchError: @escaping (Error) -> Failure?) -> Treatable<NewElement, Failure> {
+                                       mapError: @escaping (Error) -> Failure?) -> Treatable<NewElement, Failure> {
         Treatable(raw: asObservable().flatMap { (element: Element) -> Observable<NewElement> in
             do {
                 if let result = try transform(element) {
@@ -123,7 +123,7 @@ extension TreatableConvertibleType {
                 }
                 return .empty()
             } catch {
-                if let failure = catchError(error) {
+                if let failure = mapError(error) {
                     return .error(failure)
                 }
                 return .empty()
@@ -345,6 +345,21 @@ extension TreatableConvertibleType {
     }
 }
 
+// MARK: flatMap
+
+extension TreatableConvertibleType {
+    /**
+     Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
+
+     - parameter transform: A transform function to apply to each element.
+     - returns: An observable sequence whose elements are the result of invoking the one-to-many transform function on each element of the input sequence.
+     */
+    public func flatMap<NewElement>(_ transform: @escaping (Element) -> Treatable<NewElement, Failure>)
+        -> Treatable<NewElement, Failure> {
+        Treatable(raw: asObservable().flatMap(transform))
+    }
+}
+
 // MARK: merge
 
 extension TreatableConvertibleType {
@@ -436,5 +451,100 @@ extension TreatableConvertibleType {
      */
     public func debounce(_ dueTime: RxTimeInterval, scheduler: SchedulerType) -> Treatable<Element, Failure> {
         Treatable(raw: asObservable().debounce(dueTime, scheduler: scheduler))
+    }
+}
+
+// MARK: scan
+
+extension TreatableConvertibleType {
+    /**
+     Applies an accumulator function over an observable sequence and returns each intermediate result. The specified seed value is used as the initial accumulator value.
+
+     For aggregation behavior with no intermediate results, see `reduce`.
+
+     - parameter seed: The initial accumulator value.
+     - parameter accumulator: An accumulator function to be invoked on each element.
+     - returns: An observable sequence containing the accumulated values.
+     */
+    public func scan<Accumulated>(_ seed: Accumulated, accumulator: @escaping (Accumulated, Element) -> Accumulated)
+        -> Treatable<Accumulated, Failure> {
+        Treatable(raw: asObservable().scan(seed, accumulator: accumulator))
+    }
+}
+
+// MARK: concat
+
+extension TreatableConvertibleType {
+    /**
+     Concatenates all observable sequences in the given sequence, as long as the previous observable sequence terminated successfully.
+
+     - returns: An observable sequence that contains the elements of each given sequence, in sequential order.
+     */
+    public static func concat<Sequence: Swift.Sequence>(_ sequence: Sequence) -> Treatable<Element, Failure>
+        where Sequence.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.concat(sequence.lazy.map { $0.asObservable() }))
+    }
+
+    /**
+     Concatenates all observable sequences in the given sequence, as long as the previous observable sequence terminated successfully.
+
+     - returns: An observable sequence that contains the elements of each given sequence, in sequential order.
+     */
+    public static func concat<Collection: Swift.Collection>(_ collection: Collection) -> Treatable<Element, Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.concat(collection.map { $0.asObservable() }))
+    }
+}
+
+extension TreatableConvertibleType {
+    /**
+     Concatenates the second observable sequence to `self` upon successful termination of `self`.
+
+     - seealso: [concat operator on reactivex.io](http://reactivex.io/documentation/operators/concat.html)
+
+     - parameter second: Second observable sequence.
+     - returns: An observable sequence that contains the elements of `self`, followed by those of the second sequence.
+     */
+    public func concat<Source: TreatableConvertibleType>(_ second: Source) -> Treatable<Element, Failure>
+        where Source.Element == Element, Source.Failure == Failure {
+        Treatable(raw: Observable.concat([asObservable(), second.asObservable()]))
+    }
+}
+
+// MARK: zip
+
+extension TreatableConvertibleType {
+    /**
+     Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
+
+     - parameter resultSelector: Function to invoke for each series of elements at corresponding indexes in the sources.
+     - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
+     */
+    public static func zip<Collection: Swift.Collection, Result>(
+        _ collection: Collection,
+        resultSelector: @escaping ([Element]) throws -> Result,
+        mapError: @escaping (Error) -> Failure
+    ) -> Treatable<Result, Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.zip(
+            collection.map { $0.asObservable() },
+            resultSelector: { elements in
+                do {
+                    return try resultSelector(elements)
+                } catch {
+                    throw mapError(error)
+                }
+            }
+        ))
+    }
+
+    /**
+     Merges the specified observable sequences into one observable sequence all of the observable sequences have produced an element at a corresponding index.
+
+     - returns: An observable sequence containing the result of combining elements of the sources.
+     */
+    public static func zip<Collection: Swift.Collection>(_ collection: Collection) -> Treatable<[Element], Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.zip(collection.map { $0.asObservable() }))
     }
 }

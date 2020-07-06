@@ -19,9 +19,9 @@ public struct Treatable<Element, Failure: Error>: TreatableConvertibleType {
         source = raw
     }
 
-    init(source: Observable<Element>, errorTransform: @escaping (Error) -> Failure) {
+    init(source: Observable<Element>, mapError: @escaping (Error) -> Failure) {
         self.source = source.catchError { error in
-            .error(errorTransform(error))
+            .error(mapError(error))
         }
     }
 

@@ -8,8 +8,8 @@
 import RxSwift
 
 extension ObservableConvertibleType {
-    public func asTreatable<Failure>(catchError: @escaping (Error) -> Failure) -> Treatable<Element, Failure> {
-        Treatable(source: asObservable(), errorTransform: catchError)
+    public func asTreatable<Failure>(mapError: @escaping (Error) -> Failure) -> Treatable<Element, Failure> {
+        Treatable(source: asObservable(), mapError: mapError)
     }
 
     public func asTreatable(onErrorJustReturn element: Element) -> Treatable<Element, Never> {
