@@ -189,11 +189,11 @@ extension DispatchTimeInterval: Arbitrary {
     }
 }
 
-enum TestValue<Success: Arbitrary, Failure: Swift.Error>: Arbitrary where Failure: Arbitrary {
-    case next(Success, after: DispatchTimeInterval)
+enum TestValue<Element: Arbitrary, Failure: Swift.Error>: Arbitrary where Failure: Arbitrary {
+    case next(Element, after: DispatchTimeInterval)
     case error(Failure, after: DispatchTimeInterval)
 
-    func call(in observer: AnyObserver<Success>, callback: @escaping () -> Void) {
+    func call(in observer: AnyObserver<Element>, callback: @escaping () -> Void) {
         switch self {
         case let .next(element, after: interval):
             after(interval) {
@@ -208,7 +208,7 @@ enum TestValue<Success: Arbitrary, Failure: Swift.Error>: Arbitrary where Failur
         }
     }
 
-    static var arbitrary: Gen<TestValue<Success, Failure>> {
+    static var arbitrary: Gen<TestValue<Element, Failure>> {
         Gen.compose { composer in
             composer.generate(using: Gen.fromElements(of: [
                 .next(composer.generate(), after: composer.generate()),

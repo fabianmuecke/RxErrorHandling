@@ -7,9 +7,7 @@
 
 import RxSwift
 
-public struct Treatable<Success, Failure: Error>: TreatableConvertibleType {
-    public typealias Element = Success
-
+public struct Treatable<Element, Failure: Error>: TreatableConvertibleType {
     public enum Completion {
         case finished
         case failure(Failure)
@@ -21,18 +19,22 @@ public struct Treatable<Success, Failure: Error>: TreatableConvertibleType {
         source = raw
     }
 
-    init(source: Observable<Success>, errorTransform: @escaping (Error) -> Failure) {
+    init(source: Observable<Element>, errorTransform: @escaping (Error) -> Failure) {
         self.source = source.catchError { error in
             .error(errorTransform(error))
         }
+    }
+
+    public func asTreatable() -> Treatable<Element, Failure> {
+        self
     }
 
     public func asObservable() -> Observable<Element> {
         source
     }
 
-    public func asObservableResult() -> Observable<Result<Success, Failure>> {
-        asObservable().map(Result<Success, Failure>.success).catchError { .just(.failure($0 as! Failure)) }
+    public func asObservableResult() -> Observable<Result<Element, Failure>> {
+        asObservable().map(Result<Element, Failure>.success).catchError { .just(.failure($0 as! Failure)) }
     }
 }
 
@@ -45,7 +47,7 @@ extension Treatable {
         .init(raw: .never())
     }
 
-    public static func just(_ element: Success) -> Self {
+    public static func just(_ element: Element) -> Self {
         .init(raw: .just(element))
     }
 
@@ -59,7 +61,7 @@ extension Treatable {
         })
     }
 
-    public static func of(_ elements: Success...) -> Self {
+    public static func of(_ elements: Element...) -> Self {
         .init(raw: Observable.from(elements))
     }
 }
@@ -67,18 +69,18 @@ extension Treatable {
 extension Treatable {
     public func treat<Observer>(_ observer: Observer) -> Disposable where
         Observer: ObserverType,
-        Observer.Element == Result<Success, Failure> {
+        Observer.Element == Result<Element, Failure> {
         asObservableResult().subscribe(observer)
     }
 
     public func treat<Observer>(_ observer: Observer) -> Disposable where
         Observer: ObserverType,
-        Success == Observer.Element,
+        Element == Observer.Element,
         Failure == Never {
         asObservable().subscribe(observer)
     }
 
-    public func treat(onNext: @escaping (Success) -> Void,
+    public func treat(onNext: @escaping (Element) -> Void,
                       onCompleted: @escaping (Completion) -> Void,
                       onDisposed: (() -> Void)? = nil) -> Disposable {
         asObservable()
