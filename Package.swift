@@ -15,6 +15,10 @@ let package = Package(
             name: "RxErrorHandling",
             targets: ["RxErrorHandling"]
         ),
+        .library(
+            name: "RxCocoaErrorHandling",
+            targets: ["RxCocoa+ErrorHandling"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -30,6 +34,13 @@ let package = Package(
         .target(
             name: "RxErrorHandling",
             dependencies: [.product(name: "RxSwift", package: "RxSwift")]
+        ),
+        .target(
+            name: "RxCocoa+ErrorHandling",
+            dependencies: [
+                .product(name: "RxSwift", package: "RxSwift"),
+                .product(name: "RxCocoa", package: "RxSwift"),
+            ]
         ),
         .testTarget(
             name: "RxErrorHandlingTests",
