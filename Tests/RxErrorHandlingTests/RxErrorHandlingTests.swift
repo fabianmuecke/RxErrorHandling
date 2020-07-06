@@ -19,7 +19,7 @@ final class RxErrorHandlingTests: QuickSpec {
                     running = DisposeBag()
                 }
 
-                sc_it("Should catch errors") {
+                sc_it("should catch errors from asTreatable") {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
@@ -50,7 +50,23 @@ final class RxErrorHandlingTests: QuickSpec {
                     }
                 }
 
-                sc_it("Should map errors") {
+                sc_it("should catch errors from Treatable.create") {
+                    forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
+                        // GIVEN
+                        let treatable = valuesToTreatable(values)
+
+                        // WHEN
+                        let observer = scheduler.createObserver(Result<Int, InitialError>.self)
+                        treatable.treat(observer).disposed(by: running)
+                        waitFor(values)
+
+                        // THEN
+                        return expect(observer.events.map { $0.value })
+                            .sc_to(equal(expectedValues(values, mapError: { $0 })))
+                    }
+                }
+
+                sc_it("should map errors from asTreatable") {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
@@ -90,6 +106,39 @@ final class RxErrorHandlingTests: QuickSpec {
                             })))
                     }
                 }
+
+                sc_it("should map errors from Treatable.create") {
+                    forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
+                        // GIVEN
+                        let treatable = valuesToTreatable(values)
+
+                        // WHEN
+                        let observer = scheduler.createObserver(Result<Int, TestError>.self)
+                        treatable
+                            .mapError { (error: InitialError) -> TestError in
+                                switch error {
+                                case .someExternalError:
+                                    return .some
+                                case .otherExternalError:
+                                    return .other
+                                }
+                            }
+                            .treat(observer)
+                            .disposed(by: running)
+                        waitFor(values)
+
+                        // THEN
+                        return expect(observer.events.map { $0.value })
+                            .sc_to(equal(expectedValues(values, mapError: { initialError in
+                                switch initialError {
+                                case InitialError.someExternalError:
+                                    return .some
+                                default:
+                                    return .other
+                                }
+                            })))
+                    }
+                }
             }
         }
     }
@@ -122,6 +171,33 @@ private func callObserver(observer: AnyObserver<Int>, values: [TestValue<Int, In
         first.call(in: observer, callback: { callObserver(observer: observer, values: values) })
     } else {
         observer.onCompleted()
+    }
+}
+
+private func valuesToTreatable<Element: Arbitrary,
+                               Failure>(_ values: [TestValue<Element, Failure>]) -> Treatable<Element, Failure> {
+    Treatable.create { observer in
+        callObserver(observer: observer, values: values, anyErrors: values.contains(where: {
+            switch $0 {
+            case .next: return false
+            case .error: return true
+            }
+        }))
+        return Disposables.create()
+    }
+}
+
+private func callObserver<Element: Arbitrary, Failure>(observer: @escaping Treatable<Element, Failure>.Observer,
+                                                       values: [TestValue<Element, Failure>],
+                                                       anyErrors: Bool) {
+    if let first = values.first {
+        var values = values
+        values.remove(at: 0)
+        first.call(in: observer, callback: { callObserver(observer: observer, values: values, anyErrors: anyErrors) })
+    } else {
+        if !anyErrors {
+            observer(.completed(.finished))
+        }
     }
 }
 
@@ -203,6 +279,21 @@ enum TestValue<Element: Arbitrary, Failure: Swift.Error>: Arbitrary where Failur
         case let .error(error, after: interval):
             after(interval) {
                 observer.onError(error)
+                callback()
+            }
+        }
+    }
+
+    func call(in observer: @escaping Treatable<Element, Failure>.Observer, callback: @escaping () -> Void) {
+        switch self {
+        case let .next(element, after: interval):
+            after(interval) {
+                observer(.next(element))
+                callback()
+            }
+        case let .error(error, after: interval):
+            after(interval) {
+                observer(.completed(.failure(error)))
                 callback()
             }
         }

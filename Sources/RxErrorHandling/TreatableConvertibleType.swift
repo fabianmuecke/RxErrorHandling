@@ -548,3 +548,125 @@ extension TreatableConvertibleType {
         Treatable(raw: Observable.zip(collection.map { $0.asObservable() }))
     }
 }
+
+// MARK: combineLatest
+
+extension TreatableConvertibleType {
+    /**
+     Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences produces an element.
+
+     - parameter resultSelector: Function to invoke whenever any of the sources produces an element.
+     - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
+     */
+    public static func combineLatest<Collection: Swift.Collection, Result>(
+        _ collection: Collection,
+        resultSelector: @escaping ([Element]) throws -> Result,
+        mapError: @escaping (Error) -> Failure
+    ) -> Treatable<Result, Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw:
+            Observable.combineLatest(
+                collection.map { $0.asObservable() },
+                resultSelector: { elements in
+                    do {
+                        return try resultSelector(elements)
+                    } catch {
+                        throw mapError(error)
+                    }
+                }
+            )
+        )
+    }
+
+    /**
+     Merges the specified observable sequences into one observable sequence whenever any of the observable sequences produces an element.
+
+     - returns: An observable sequence containing the result of combining elements of the sources.
+     */
+    public static func combineLatest<Collection: Swift.Collection>(_ collection: Collection)
+        -> Treatable<[Element], Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.combineLatest(collection.map { $0.asObservable() }))
+    }
+}
+
+// MARK: withLatestFrom
+
+extension TreatableConvertibleType {
+    /**
+     Merges two observable sequences into one observable sequence by combining each element from self with the latest element from the second source, if any.
+
+     - parameter second: Second observable source.
+     - parameter resultSelector: Function to invoke for each element from the self combined with the latest element from the second source, if any.
+     - returns: An observable sequence containing the result of combining each element of the self  with the latest element from the second source, if any, using the specified result selector function.
+     */
+    public func withLatestFrom<SecondO: TreatableConvertibleType, ResultType>(
+        _ second: SecondO,
+        resultSelector: @escaping (Element, SecondO.Element) -> ResultType
+    ) -> Treatable<ResultType, Failure> where SecondO.Failure == Failure {
+        Treatable(raw: asObservable().withLatestFrom(second, resultSelector: resultSelector))
+    }
+
+    /**
+     Merges two observable sequences into one observable sequence by using latest element from the second sequence every time when `self` emits an element.
+
+     - parameter second: Second observable source.
+     - returns: An observable sequence containing the result of combining each element of the self  with the latest element from the second source, if any, using the specified result selector function.
+     */
+    public func withLatestFrom<SecondO: TreatableConvertibleType>(_ second: SecondO)
+        -> Treatable<SecondO.Element, Failure> where SecondO.Failure == Failure {
+        Treatable(raw: asObservable().withLatestFrom(second))
+    }
+}
+
+// MARK: skip
+
+extension TreatableConvertibleType {
+    /**
+     Bypasses a specified number of elements in an observable sequence and then returns the remaining elements.
+
+     - seealso: [skip operator on reactivex.io](http://reactivex.io/documentation/operators/skip.html)
+
+     - parameter count: The number of elements to skip before returning the remaining elements.
+     - returns: An observable sequence that contains the elements that occur after the specified index in the input sequence.
+     */
+    public func skip(_ count: Int)
+        -> Treatable<Element, Failure> {
+        Treatable(raw: asObservable().skip(count))
+    }
+}
+
+// MARK: startWith
+
+extension TreatableConvertibleType {
+    /**
+     Prepends a value to an observable sequence.
+
+     - seealso: [startWith operator on reactivex.io](http://reactivex.io/documentation/operators/startwith.html)
+
+     - parameter element: Element to prepend to the specified sequence.
+     - returns: The source sequence prepended with the specified values.
+     */
+    public func startWith(_ element: Element)
+        -> Treatable<Element, Failure> {
+        Treatable(raw: asObservable().startWith(element))
+    }
+}
+
+// MARK: delay
+
+extension TreatableConvertibleType {
+    /**
+     Returns an observable sequence by the source observable sequence shifted forward in time by a specified delay. Error events from the source observable sequence are not delayed.
+
+     - seealso: [delay operator on reactivex.io](http://reactivex.io/documentation/operators/delay.html)
+
+     - parameter dueTime: Relative time shift of the source by.
+     - parameter scheduler: Scheduler to run the subscription delay timer on.
+     - returns: the source Observable shifted in time by the specified delay.
+     */
+    public func delay(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
+        -> Treatable<Element, Failure> {
+        Treatable(raw: asObservable().delay(dueTime, scheduler: scheduler))
+    }
+}

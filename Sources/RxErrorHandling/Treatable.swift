@@ -8,6 +8,11 @@
 import RxSwift
 
 public struct Treatable<Element, Failure: Error>: TreatableConvertibleType {
+    public enum Event {
+        case next(Element)
+        case completed(Completion)
+    }
+
     public enum Completion {
         case finished
         case failure(Failure)
@@ -63,6 +68,28 @@ extension Treatable {
 
     public static func of(_ elements: Element...) -> Self {
         .init(raw: Observable.from(elements))
+    }
+}
+
+extension TreatableConvertibleType {
+    public typealias Observer = (Treatable<Element, Failure>.Event) -> Void
+
+    public static func create(subscribe: @escaping (@escaping Observer) -> Disposable)
+        -> Treatable<Element, Failure> {
+        let source = Observable<Element>.create { observer in
+            subscribe { event in
+                switch event {
+                case let .next(element):
+                    observer.on(.next(element))
+                case .completed(.finished):
+                    observer.on(.completed)
+                case let .completed(.failure(failure)):
+                    observer.on(.error(failure))
+                }
+            }
+        }
+
+        return Treatable(raw: source)
     }
 }
 
