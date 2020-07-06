@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Treatable.swift
 //
 //
 //  Created by Fabian Mücke on 02.07.20.

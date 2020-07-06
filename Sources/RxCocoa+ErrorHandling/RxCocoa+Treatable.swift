@@ -8,7 +8,13 @@
 import RxCocoa
 @testable import RxErrorHandling
 
-extension SharedSequenceConvertibleType {
+extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
+    func asTreatable() -> Treatable<Element, Never> {
+        Treatable(raw: asObservable())
+    }
+}
+
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
     func asTreatable() -> Treatable<Element, Never> {
         Treatable(raw: asObservable())
     }
