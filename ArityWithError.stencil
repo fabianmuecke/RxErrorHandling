@@ -1,0 +1,52 @@
+{% for type in types.protocols %}
+{% for method in type.allMethods|annotated:"arityWithError" %}
+// sourcery:file:{{type.name|split:"."|join:"_"}}+{{method.callName}}+arity+mapError.swift
+//
+//  {{type.name|split:"."|join:"_"}}+{{method.callName}}+arity.swift
+//  RxErrorHandling
+//
+//  Created by Fabian Mücke on 06.07.20.
+//
+
+import RxSwift
+
+extension {{type.name}} {
+    {% for numberOfParams in 2...method.annotations.arityWithError %}
+    {{method.accessLevel}} {% if method.isStatic%}static {% endif %}func {{method.callName}}
+    <
+    {% for currentParam in 1...numberOfParams %}
+        O{{currentParam}}: {{type.name}}{% if forloop.last == false %}, {% endif %}
+    {% endfor %}
+    >
+    (
+        {% for currentParam in 1...numberOfParams %}
+            _ source{{currentParam}}: O{{currentParam}},
+        {% endfor %}
+        resultSelector: @escaping ({% for currentParam in 1...numberOfParams %}O{{currentParam}}.Element{% if forloop.last == false %}, {% endif %}{% endfor %}) throws -> Element,
+        mapError: @escaping (Error) -> Failure
+    ) -> Treatable<Element, Failure>
+    where
+    {% for currentParam in 1...numberOfParams %}
+        O{{currentParam}}.Element == Element, O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
+    {% endfor %} {
+        Treatable(raw: Observable.{{method.callName}}(
+            {% for currentParam in 1...numberOfParams %}
+                source{{currentParam}}.asObservable(),
+            {% endfor %}
+            resultSelector: { {% for currentParam in 1...numberOfParams %}element{{currentParam}}{% if forloop.last == false %}, {% endif %}{% endfor %} in
+                do {
+                    return try resultSelector({% for currentParam in 1...numberOfParams %}element{{currentParam}}{% if forloop.last == false %}, {% endif %}{% endfor %})
+                } catch {
+                    throw mapError(error)
+                }
+            }
+        ))
+    }
+
+    
+    {% endfor %}
+}
+
+// sourcery:end
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,8 @@
+sources:
+    include:
+        - .
+templates:
+    - ../../Arity.stencil
+    - ../../ArityWithError.stencil
+output:
+    path: Generated

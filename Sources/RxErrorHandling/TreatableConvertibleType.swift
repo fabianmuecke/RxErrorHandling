@@ -518,8 +518,10 @@ extension TreatableConvertibleType {
      Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
 
      - parameter resultSelector: Function to invoke for each series of elements at corresponding indexes in the sources.
+     - parameter mapError: Function to map errors to the Treatables Failure type.
      - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
      */
+    // sourcery: arityWithError = 8
     public static func zip<Collection: Swift.Collection, Result>(
         _ collection: Collection,
         resultSelector: @escaping ([Element]) throws -> Result,
@@ -535,6 +537,24 @@ extension TreatableConvertibleType {
                     throw mapError(error)
                 }
             }
+        ))
+    }
+
+    /**
+     Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
+
+     - parameter resultSelector: Function to invoke for each series of elements at corresponding indexes in the sources.
+     - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
+     */
+    // sourcery: arity = 8
+    public static func zip<Collection: Swift.Collection, Result>(
+        _ collection: Collection,
+        resultSelector: @escaping ([Element]) -> Result
+    ) -> Treatable<Result, Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw: Observable.zip(
+            collection.map { $0.asObservable() },
+            resultSelector: resultSelector
         ))
     }
 
@@ -556,8 +576,10 @@ extension TreatableConvertibleType {
      Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences produces an element.
 
      - parameter resultSelector: Function to invoke whenever any of the sources produces an element.
+     - parameter mapError: Function to map errors to Treatable Failure type.
      - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
      */
+    // sourcery: arityWithError = 8
     public static func combineLatest<Collection: Swift.Collection, Result>(
         _ collection: Collection,
         resultSelector: @escaping ([Element]) throws -> Result,
@@ -574,6 +596,26 @@ extension TreatableConvertibleType {
                         throw mapError(error)
                     }
                 }
+            )
+        )
+    }
+
+    /**
+     Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences produces an element.
+
+     - parameter resultSelector: Function to invoke whenever any of the sources produces an element.
+     - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
+     */
+    // sourcery: arity = 8
+    public static func combineLatest<Collection: Swift.Collection, Result>(
+        _ collection: Collection,
+        resultSelector: @escaping ([Element]) -> Result
+    ) -> Treatable<Result, Failure>
+        where Collection.Element == Treatable<Element, Failure> {
+        Treatable(raw:
+            Observable.combineLatest(
+                collection.map { $0.asObservable() },
+                resultSelector: resultSelector
             )
         )
     }
