@@ -116,17 +116,17 @@ extension TreatableConvertibleType {
      */
     public func compactMap<NewElement>(_ transform: @escaping (Element) throws -> NewElement?,
                                        mapError: @escaping (Error) -> Failure?) -> Treatable<NewElement, Failure> {
-        Treatable(raw: asObservable().flatMap { (element: Element) -> Observable<NewElement> in
+        Treatable(raw: asObservable().compactMap { (element: Element) -> NewElement? in
             do {
                 if let result = try transform(element) {
-                    return .just(result)
+                    return result
                 }
-                return .empty()
+                return nil
             } catch {
                 if let failure = mapError(error) {
-                    return .error(failure)
+                    throw failure
                 }
-                return .empty()
+                return nil
             }
         })
     }
