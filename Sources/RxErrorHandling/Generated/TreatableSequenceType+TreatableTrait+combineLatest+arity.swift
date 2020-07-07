@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 //
-//  TreatableConvertibleType+combineLatest+arity.swift
+//  TreatableSequenceType+combineLatest+arity.swift
 //  RxErrorHandling
 //
 //  Created by Fabian Mücke on 06.07.20.
@@ -10,7 +10,7 @@
 
 import RxSwift
 
-extension TreatableSequenceType {
+extension TreatableSequenceType where Trait == TreatableTrait {
     public static func combineLatest
     <
         O1: TreatableSequenceType, 

@@ -1,6 +1,6 @@
 {% for type in types.protocols %}
 {% for method in type.allMethods|annotated:"arityWithError" %}
-// sourcery:file:{{type.name|split:"."|join:"_"}}+{{method.callName}}+arity+mapError.swift
+// sourcery:file:{{type.name|split:"."|join:"_"}}+{{method.annotations.trait|split:"."|join:"_"}}+{{method.callName}}+arity+mapError.swift
 //
 //  {{type.name|split:"."|join:"_"}}+{{method.callName}}+arity.swift
 //  RxErrorHandling
@@ -10,7 +10,7 @@
 
 import RxSwift
 
-extension {{type.name}} {
+extension {{type.name}} where Trait == {{method.annotations.trait}} {
     {% for numberOfParams in 2...method.annotations.arityWithError %}
     {{method.accessLevel}} {% if method.isStatic%}static {% endif %}func {{method.callName}}
     <

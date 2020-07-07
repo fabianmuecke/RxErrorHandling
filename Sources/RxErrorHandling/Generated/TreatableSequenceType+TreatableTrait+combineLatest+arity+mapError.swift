@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 //
-//  TreatableConvertibleType+zip+arity.swift
+//  TreatableSequenceType+combineLatest+arity.swift
 //  RxErrorHandling
 //
 //  Created by Fabian Mücke on 06.07.20.
@@ -10,8 +10,8 @@
 
 import RxSwift
 
-extension TreatableSequenceType {
-    public static func zip
+extension TreatableSequenceType where Trait == TreatableTrait {
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType
@@ -26,7 +26,7 @@ extension TreatableSequenceType {
         O1.Element == Element, O1.Failure == Failure,
         O2.Element == Element, O2.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
             resultSelector: { element1, element2 in
@@ -39,7 +39,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -57,7 +57,7 @@ extension TreatableSequenceType {
         O2.Element == Element, O2.Failure == Failure,
         O3.Element == Element, O3.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),
@@ -71,7 +71,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -92,7 +92,7 @@ extension TreatableSequenceType {
         O3.Element == Element, O3.Failure == Failure,
         O4.Element == Element, O4.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),
@@ -107,7 +107,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -131,7 +131,7 @@ extension TreatableSequenceType {
         O4.Element == Element, O4.Failure == Failure,
         O5.Element == Element, O5.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),
@@ -147,7 +147,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -174,7 +174,7 @@ extension TreatableSequenceType {
         O5.Element == Element, O5.Failure == Failure,
         O6.Element == Element, O6.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),
@@ -191,7 +191,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -221,7 +221,7 @@ extension TreatableSequenceType {
         O6.Element == Element, O6.Failure == Failure,
         O7.Element == Element, O7.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),
@@ -239,7 +239,7 @@ extension TreatableSequenceType {
         ))
     }
 
-    public static func zip
+    public static func combineLatest
     <
         O1: TreatableSequenceType, 
         O2: TreatableSequenceType, 
@@ -272,7 +272,7 @@ extension TreatableSequenceType {
         O7.Element == Element, O7.Failure == Failure,
         O8.Element == Element, O8.Failure == Failure
      {
-        Treatable(raw: Observable.zip(
+        Treatable(raw: Observable.combineLatest(
                 source1.asObservable(),
                 source2.asObservable(),
                 source3.asObservable(),

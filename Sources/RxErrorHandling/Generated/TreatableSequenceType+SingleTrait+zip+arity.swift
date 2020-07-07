@@ -2,7 +2,7 @@
 // DO NOT EDIT
 
 //
-//  TreatableConvertibleType+zip+arity.swift
+//  TreatableSequenceType+zip+arity.swift
 //  RxErrorHandling
 //
 //  Created by Fabian Mücke on 06.07.20.
@@ -10,7 +10,7 @@
 
 import RxSwift
 
-extension TreatableSequenceType {
+extension TreatableSequenceType where Trait == SingleTrait {
     public static func zip
     <
         O1: TreatableSequenceType, 
