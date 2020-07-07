@@ -10,11 +10,11 @@
 
 import RxSwift
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -41,9 +41,9 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -73,10 +73,10 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType, 
-        O4: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType, 
+        O4: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -109,11 +109,11 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType, 
-        O4: TreatableConvertibleType, 
-        O5: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType, 
+        O4: TreatableSequenceType, 
+        O5: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -149,12 +149,12 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType, 
-        O4: TreatableConvertibleType, 
-        O5: TreatableConvertibleType, 
-        O6: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType, 
+        O4: TreatableSequenceType, 
+        O5: TreatableSequenceType, 
+        O6: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -193,13 +193,13 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType, 
-        O4: TreatableConvertibleType, 
-        O5: TreatableConvertibleType, 
-        O6: TreatableConvertibleType, 
-        O7: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType, 
+        O4: TreatableSequenceType, 
+        O5: TreatableSequenceType, 
+        O6: TreatableSequenceType, 
+        O7: TreatableSequenceType
     >
     (
             _ source1: O1,
@@ -241,14 +241,14 @@ extension TreatableConvertibleType {
 
     public static func zip
     <
-        O1: TreatableConvertibleType, 
-        O2: TreatableConvertibleType, 
-        O3: TreatableConvertibleType, 
-        O4: TreatableConvertibleType, 
-        O5: TreatableConvertibleType, 
-        O6: TreatableConvertibleType, 
-        O7: TreatableConvertibleType, 
-        O8: TreatableConvertibleType
+        O1: TreatableSequenceType, 
+        O2: TreatableSequenceType, 
+        O3: TreatableSequenceType, 
+        O4: TreatableSequenceType, 
+        O5: TreatableSequenceType, 
+        O6: TreatableSequenceType, 
+        O7: TreatableSequenceType, 
+        O8: TreatableSequenceType
     >
     (
             _ source1: O1,

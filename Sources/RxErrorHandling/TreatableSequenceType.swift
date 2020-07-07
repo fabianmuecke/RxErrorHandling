@@ -7,16 +7,18 @@
 
 import RxSwift
 
-public protocol TreatableConvertibleType: ObservableConvertibleType {
+public protocol TreatableSequenceType: ObservableConvertibleType {
+    associatedtype Trait
     associatedtype Failure where Failure: Error
 
-    func asTreatable() -> Treatable<Element, Failure>
+    var treatableSequence: TreatableSequence<Trait, Element, Failure> { get }
+
     func asObservableResult() -> Observable<Result<Element, Failure>>
 }
 
 // MARK: map
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Projects each element of an observable sequence into a new form.
 
@@ -81,7 +83,7 @@ extension TreatableConvertibleType {
 
 // MARK: compactMap
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Projects each element of an observable sequence into an optional form and filters all optional results.
 
@@ -134,7 +136,7 @@ extension TreatableConvertibleType {
 
 // MARK: filter
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Filters the elements of an observable sequence based on a predicate.
 
@@ -175,7 +177,7 @@ extension TreatableConvertibleType {
 
 // MARK: Failure type
 
-extension TreatableConvertibleType where Failure == Never {
+extension TreatableSequenceType where Failure == Never {
     // TODO: Have a custom TreatableConvertibleType for non-fallible like apple does, so setFailureType can be called again later?
     public func setFailureType<NewFailure>(to failureType: NewFailure.Type) -> Treatable<Element, NewFailure> {
         Treatable(raw: asObservable())
@@ -184,7 +186,7 @@ extension TreatableConvertibleType where Failure == Never {
 
 // MARK: switchLatest
 
-extension TreatableConvertibleType where Element: TreatableConvertibleType {
+extension TreatableSequenceType where Element: TreatableSequenceType {
     /**
      Transforms an observable sequence of observable sequences into an observable sequence
      producing values only from the most recent observable sequence.
@@ -201,7 +203,7 @@ extension TreatableConvertibleType where Element: TreatableConvertibleType {
 
 // MARK: flatMapLatest
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Projects each element of an observable sequence into a new sequence of observable sequences and then
      transforms an observable sequence of observable sequences into an observable sequence producing values only from the most recent observable sequence.
@@ -220,7 +222,7 @@ extension TreatableConvertibleType {
 
 // MARK: flatMapFirst
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
      If element is received while there is some projected observable sequence being merged it will simply be ignored.
@@ -236,7 +238,7 @@ extension TreatableConvertibleType {
 
 // MARK: do
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Invokes an action for each event in the observable sequence, and propagates all observer messages through the result sequence.
 
@@ -252,8 +254,8 @@ extension TreatableConvertibleType {
     public func `do`(
         onNext: ((Element) -> Void)? = nil,
         afterNext: ((Element) -> Void)? = nil,
-        onCompleted: ((Treatable<Element, Failure>.Completion) -> Void)? = nil,
-        afterCompleted: ((Treatable<Element, Failure>.Completion) -> Void)? = nil,
+        onCompleted: ((TreatableEvent<Element, Failure>.Completion) -> Void)? = nil,
+        afterCompleted: ((TreatableEvent<Element, Failure>.Completion) -> Void)? = nil,
         onSubscribe: (() -> Void)? = nil,
         onSubscribed: (() -> Void)? = nil,
         onDispose: (() -> Void)? = nil
@@ -276,7 +278,7 @@ extension TreatableConvertibleType {
 
 // MARK: debug
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Prints received events for all observers on standard output.
 
@@ -297,7 +299,7 @@ extension TreatableConvertibleType {
 
 // MARK: distinctUntilChanged
 
-extension TreatableConvertibleType where Element: Equatable {
+extension TreatableSequenceType where Element: Equatable {
     /**
      Returns an observable sequence that contains only distinct contiguous elements according to equality operator.
 
@@ -308,7 +310,7 @@ extension TreatableConvertibleType where Element: Equatable {
     }
 }
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Returns an observable sequence that contains only distinct contiguous elements according to the `keySelector`.
 
@@ -347,7 +349,7 @@ extension TreatableConvertibleType {
 
 // MARK: flatMap
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
 
@@ -362,7 +364,7 @@ extension TreatableConvertibleType {
 
 // MARK: merge
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Merges elements from all observable sequences from collection into a single observable sequence.
 
@@ -372,7 +374,7 @@ extension TreatableConvertibleType {
      - returns: The observable sequence that merges the elements of the observable sequences.
      */
     public static func merge<Collection: Swift.Collection>(_ sources: Collection) -> Treatable<Element, Failure> where
-        Collection.Element: TreatableConvertibleType,
+        Collection.Element: TreatableSequenceType,
         Collection.Element.Element == Element,
         Collection.Element.Failure == Failure {
         Treatable<Element, Failure>(raw: Observable.merge(sources.map { $0.asObservable() }))
@@ -403,7 +405,7 @@ extension TreatableConvertibleType {
     }
 }
 
-extension TreatableConvertibleType where Element: TreatableConvertibleType {
+extension TreatableSequenceType where Element: TreatableSequenceType {
     /**
      Merges elements from all observable sequences in the given enumerable sequence into a single observable sequence.
 
@@ -426,7 +428,7 @@ extension TreatableConvertibleType where Element: TreatableConvertibleType {
 
 // MARK: throttle
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Returns an Observable that emits the first and the latest item emitted by the source Observable during sequential time windows of a specified duration.
 
@@ -456,7 +458,7 @@ extension TreatableConvertibleType {
 
 // MARK: scan
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Applies an accumulator function over an observable sequence and returns each intermediate result. The specified seed value is used as the initial accumulator value.
 
@@ -474,7 +476,7 @@ extension TreatableConvertibleType {
 
 // MARK: concat
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Concatenates all observable sequences in the given sequence, as long as the previous observable sequence terminated successfully.
 
@@ -496,7 +498,7 @@ extension TreatableConvertibleType {
     }
 }
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Concatenates the second observable sequence to `self` upon successful termination of `self`.
 
@@ -505,7 +507,7 @@ extension TreatableConvertibleType {
      - parameter second: Second observable sequence.
      - returns: An observable sequence that contains the elements of `self`, followed by those of the second sequence.
      */
-    public func concat<Source: TreatableConvertibleType>(_ second: Source) -> Treatable<Element, Failure>
+    public func concat<Source: TreatableSequenceType>(_ second: Source) -> Treatable<Element, Failure>
         where Source.Element == Element, Source.Failure == Failure {
         Treatable(raw: Observable.concat([asObservable(), second.asObservable()]))
     }
@@ -513,7 +515,7 @@ extension TreatableConvertibleType {
 
 // MARK: zip
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
 
@@ -571,7 +573,7 @@ extension TreatableConvertibleType {
 
 // MARK: combineLatest
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences produces an element.
 
@@ -634,7 +636,7 @@ extension TreatableConvertibleType {
 
 // MARK: withLatestFrom
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Merges two observable sequences into one observable sequence by combining each element from self with the latest element from the second source, if any.
 
@@ -642,7 +644,7 @@ extension TreatableConvertibleType {
      - parameter resultSelector: Function to invoke for each element from the self combined with the latest element from the second source, if any.
      - returns: An observable sequence containing the result of combining each element of the self  with the latest element from the second source, if any, using the specified result selector function.
      */
-    public func withLatestFrom<SecondO: TreatableConvertibleType, ResultType>(
+    public func withLatestFrom<SecondO: TreatableSequenceType, ResultType>(
         _ second: SecondO,
         resultSelector: @escaping (Element, SecondO.Element) -> ResultType
     ) -> Treatable<ResultType, Failure> where SecondO.Failure == Failure {
@@ -655,7 +657,7 @@ extension TreatableConvertibleType {
      - parameter second: Second observable source.
      - returns: An observable sequence containing the result of combining each element of the self  with the latest element from the second source, if any, using the specified result selector function.
      */
-    public func withLatestFrom<SecondO: TreatableConvertibleType>(_ second: SecondO)
+    public func withLatestFrom<SecondO: TreatableSequenceType>(_ second: SecondO)
         -> Treatable<SecondO.Element, Failure> where SecondO.Failure == Failure {
         Treatable(raw: asObservable().withLatestFrom(second))
     }
@@ -663,7 +665,7 @@ extension TreatableConvertibleType {
 
 // MARK: skip
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Bypasses a specified number of elements in an observable sequence and then returns the remaining elements.
 
@@ -680,7 +682,7 @@ extension TreatableConvertibleType {
 
 // MARK: startWith
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Prepends a value to an observable sequence.
 
@@ -697,7 +699,7 @@ extension TreatableConvertibleType {
 
 // MARK: delay
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Returns an observable sequence by the source observable sequence shifted forward in time by a specified delay. Error events from the source observable sequence are not delayed.
 
@@ -715,7 +717,7 @@ extension TreatableConvertibleType {
 
 // MARK: share
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     /**
      Returns an observable sequence that **shares a single subscription to the underlying sequence**, and immediately upon subscription replays  elements in buffer.
 

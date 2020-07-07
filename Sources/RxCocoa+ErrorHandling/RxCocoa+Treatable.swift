@@ -20,7 +20,7 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 }
 
-extension TreatableConvertibleType where Failure == Never {
+extension TreatableSequenceType where Failure == Never {
     func asSignal() -> Signal<Element> {
         asSignal(onErrorSignalWith: .empty())
     }
@@ -30,7 +30,7 @@ extension TreatableConvertibleType where Failure == Never {
     }
 }
 
-extension TreatableConvertibleType {
+extension TreatableSequenceType {
     func asSignal() -> Signal<Result<Element, Failure>> {
         asObservableResult().asSignal(onErrorSignalWith: .empty())
     }

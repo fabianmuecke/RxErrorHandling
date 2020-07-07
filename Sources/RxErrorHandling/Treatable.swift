@@ -7,43 +7,49 @@
 
 import RxSwift
 
-public struct Treatable<Element, Failure: Error>: TreatableConvertibleType {
-    public enum Event {
-        case next(Element)
-        case completed(Completion)
-    }
+public struct TreatableTrait { private init() {} }
 
-    public enum Completion {
-        case finished
-        case failure(Failure)
-    }
-
+public struct TreatableSequence<Trait, Element, Failure: Swift.Error> {
     let source: Observable<Element>
 
     init(raw: Observable<Element>) {
         source = raw
     }
+}
 
-    init(source: Observable<Element>, mapError: @escaping (Error) -> Failure) {
-        self.source = source.catchError { error in
-            .error(mapError(error))
-        }
-    }
-
-    public func asTreatable() -> Treatable<Element, Failure> {
-        self
-    }
-
+extension TreatableSequence: ObservableConvertibleType {
     public func asObservable() -> Observable<Element> {
         source
     }
+}
 
+extension TreatableSequence: TreatableSequenceType {
+    public var treatableSequence: TreatableSequence<Trait, Element, Failure> {
+        self
+    }
+    
     public func asObservableResult() -> Observable<Result<Element, Failure>> {
         asObservable().map(Result<Element, Failure>.success).catchError { .just(.failure($0 as! Failure)) }
     }
 }
 
-extension Treatable {
+extension TreatableTrait {
+    public enum Default {}
+}
+
+public typealias Treatable<Element, Failure: Swift.Error> = TreatableSequence<TreatableTrait.Default, Element, Failure>
+
+public enum TreatableEvent<Element, Failure: Swift.Error> {
+    case next(Element)
+    case completed(Completion)
+
+    public enum Completion {
+        case finished
+        case failure(Failure)
+    }
+}
+
+extension TreatableSequence where Trait == TreatableTrait.Default {
     public static func empty() -> Self {
         .init(raw: .empty())
     }
@@ -71,8 +77,8 @@ extension Treatable {
     }
 }
 
-extension TreatableConvertibleType {
-    public typealias Observer = (Treatable<Element, Failure>.Event) -> Void
+extension TreatableSequence where Trait == TreatableTrait.Default {
+    public typealias Observer = (TreatableEvent<Element, Failure>) -> Void
 
     public static func create(subscribe: @escaping (@escaping Observer) -> Disposable)
         -> Treatable<Element, Failure> {
@@ -93,7 +99,7 @@ extension TreatableConvertibleType {
     }
 }
 
-extension Treatable {
+extension TreatableSequence where Trait == TreatableTrait.Default {
     public func treat<Observer>(_ observer: Observer) -> Disposable where
         Observer: ObserverType,
         Observer.Element == Result<Element, Failure> {
@@ -108,7 +114,7 @@ extension Treatable {
     }
 
     public func treat(onNext: @escaping (Element) -> Void,
-                      onCompleted: @escaping (Completion) -> Void,
+                      onCompleted: @escaping (TreatableEvent<Element, Failure>.Completion) -> Void,
                       onDisposed: (() -> Void)? = nil) -> Disposable {
         asObservable()
             .subscribe(onNext: { onNext($0) },
