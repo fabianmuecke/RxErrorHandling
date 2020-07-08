@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "RxNimble",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxNimble",
+        "state": {
+          "branch": null,
+          "revision": "866d3c55dd4a762d4261afca103ad59dd0b1883a",
+          "version": "4.7.2"
+        }
+      },
+      {
         "package": "RxSwift",
         "repositoryURL": "https://github.com/ReactiveX/RxSwift",
         "state": {

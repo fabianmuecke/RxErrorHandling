@@ -2,27 +2,22 @@ import Foundation
 import Nimble
 import Quick
 import QuickSwiftCheck
+import RxBlocking
 @testable import RxErrorHandling
+import RxNimble
 import RxSwift
-import RxTest
 import SwiftCheck
 
 final class RxErrorHandlingTests: QuickSpec {
     override func spec() {
         describe("RxErrorHandlingTests") {
             context("Errors") {
-                var scheduler: TestScheduler!
-                var running: DisposeBag!
-
-                beforeEach {
-                    scheduler = TestScheduler(initialClock: 0)
-                    running = DisposeBag()
-                }
-
                 sc_it("should catch errors from asTreatable") {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
+
+                        // WHEN
                         let treatable = source.asTreatable(mapError: { anyError -> TestError in
                             switch anyError {
                             case InitialError.someExternalError:
@@ -32,14 +27,9 @@ final class RxErrorHandlingTests: QuickSpec {
                             }
                         })
 
-                        // WHEN
-                        let observer = scheduler.createObserver(Result<Int, TestError>.self)
-                        treatable.treat(observer).disposed(by: running)
-                        waitFor(values)
-
-                        // THEN
-                        return expect(observer.events.map { $0.value })
-                            .sc_to(equal(expectedValues(values, mapError: { initialError in
+                        return expect(treatable.asObservable())
+                            .materialized(timeout: waitTime(values).timeInterval)
+                            .sc_to(equal(expectedValues(values, mapError: { initialError -> TestError in
                                 switch initialError {
                                 case InitialError.someExternalError:
                                     return .some
@@ -55,13 +45,9 @@ final class RxErrorHandlingTests: QuickSpec {
                         // GIVEN
                         let treatable = valuesToTreatable(values)
 
-                        // WHEN
-                        let observer = scheduler.createObserver(Result<Int, InitialError>.self)
-                        treatable.treat(observer).disposed(by: running)
-                        waitFor(values)
-
                         // THEN
-                        return expect(observer.events.map { $0.value })
+                        return expect(treatable.asObservable())
+                            .materialized(timeout: waitTime(values).timeInterval)
                             .sc_to(equal(expectedValues(values, mapError: { $0 })))
                     }
                 }
@@ -70,6 +56,8 @@ final class RxErrorHandlingTests: QuickSpec {
                     forAll(errorsGen) { (values: [TestValue<Int, InitialError>]) in
                         // GIVEN
                         let source = valuesToObservable(values)
+
+                        // WHEN
                         let treatable = source.asTreatable(mapError: { anyError -> TestError in
                             switch anyError {
                             case InitialError.someExternalError:
@@ -77,26 +65,19 @@ final class RxErrorHandlingTests: QuickSpec {
                             default:
                                 return .other
                             }
-                        })
-
-                        // WHEN
-                        let observer = scheduler.createObserver(Result<Int, TestError2>.self)
-                        treatable
-                            .mapError { (error: TestError) -> TestError2 in
-                                switch error {
-                                case .some:
-                                    return .some2
-                                case .other:
-                                    return .other2
-                                }
+                        }).mapError { (error: TestError) -> TestError2 in
+                            switch error {
+                            case .some:
+                                return .some2
+                            case .other:
+                                return .other2
                             }
-                            .treat(observer)
-                            .disposed(by: running)
-                        waitFor(values)
+                        }
 
                         // THEN
-                        return expect(observer.events.map { $0.value })
-                            .sc_to(equal(expectedValues(values, mapError: { initialError in
+                        return expect(treatable.asObservable())
+                            .materialized(timeout: waitTime(values).timeInterval)
+                            .sc_to(equal(expectedValues(values, mapError: { initialError -> TestError2 in
                                 switch initialError {
                                 case InitialError.someExternalError:
                                     return .some2
@@ -113,23 +94,19 @@ final class RxErrorHandlingTests: QuickSpec {
                         let treatable = valuesToTreatable(values)
 
                         // WHEN
-                        let observer = scheduler.createObserver(Result<Int, TestError>.self)
-                        treatable
-                            .mapError { (error: InitialError) -> TestError in
-                                switch error {
-                                case .someExternalError:
-                                    return .some
-                                case .otherExternalError:
-                                    return .other
-                                }
+                        let mapped = treatable.mapError { (error: InitialError) -> TestError in
+                            switch error {
+                            case .someExternalError:
+                                return .some
+                            case .otherExternalError:
+                                return .other
                             }
-                            .treat(observer)
-                            .disposed(by: running)
-                        waitFor(values)
+                        }
 
                         // THEN
-                        return expect(observer.events.map { $0.value })
-                            .sc_to(equal(expectedValues(values, mapError: { initialError in
+                        return expect(mapped.asObservable())
+                            .materialized()
+                            .sc_to(equal(expectedValues(values, mapError: { initialError -> TestError in
                                 switch initialError {
                                 case InitialError.someExternalError:
                                     return .some
@@ -144,16 +121,21 @@ final class RxErrorHandlingTests: QuickSpec {
     }
 }
 
-private func expectedValues<Failure>(_ values: [TestValue<Int, InitialError>],
-                                     mapError: (InitialError) -> Failure) -> [RxSwift.Event<Result<Int, Failure>>] {
-    values.map { value in
+private func expectedValues<Failure: Swift.Error>(
+    _ values: [TestValue<Int, InitialError>],
+    mapError: (InitialError) -> Failure
+) -> MaterializedSequenceResult<Int> {
+    values.reduce(MaterializedSequenceResult<Int>.completed(elements: [])) { result, value in
+        guard case let .completed(elements: elements) = result else {
+            return result
+        }
         switch value {
         case .next(let value, after: _):
-            return .next(.success(value))
+            return .completed(elements: elements + [value])
         case .error(let error, after: _):
-            return .next(.failure(mapError(error)))
+            return .failed(elements: elements, error: mapError(error))
         }
-    } + [.completed]
+    }
 }
 
 private func valuesToObservable(_ values: [TestValue<Int, InitialError>]) -> Observable<Int> {
@@ -201,14 +183,6 @@ private func callObserver<Element: Arbitrary, Failure>(observer: @escaping Treat
     }
 }
 
-private func waitFor(_ values: [TestValue<Int, InitialError>]) {
-    var finished = false
-    after(waitTime(values)) { finished = true }
-    while !finished {
-        RunLoop.current.run(mode: .default, before: Date.distantFuture)
-    }
-}
-
 private func waitTime(_ values: [TestValue<Int, InitialError>]) -> DispatchTimeInterval {
     .milliseconds(10 + values.reduce(0) { result, next in
         switch next {
@@ -221,7 +195,26 @@ private func waitTime(_ values: [TestValue<Int, InitialError>]) -> DispatchTimeI
                 return result
             }
         }
-        })
+    })
+}
+
+extension DispatchTimeInterval {
+    var timeInterval: TimeInterval {
+        switch self {
+        case let .seconds(value):
+            return Double(value)
+        case let .milliseconds(value):
+            return Double(value) * 0.001
+        case let .microseconds(value):
+            return Double(value) * 0.000001
+        case let .nanoseconds(value):
+            return Double(value) * 0.000000001
+        case .never:
+            return Double.max
+        default:
+            return 0
+        }
+    }
 }
 
 /// 0 to 10 ms
@@ -331,5 +324,26 @@ enum TestError2: Swift.Error, Equatable {
 extension CaseIterable where AllCases.Index: RandomType {
     public static var arbitrary: Gen<Self> {
         Gen.fromElements(of: Self.allCases)
+    }
+}
+
+extension Expectation where T: ObservableConvertibleType {
+    func materialized(timeout: TimeInterval? = nil) -> Expectation<MaterializedSequenceResult<T.Element>> {
+        Expectation<MaterializedSequenceResult<T.Element>>(expression: expression.cast { source in
+            source?.toBlocking(timeout: timeout).materialize()
+        })
+    }
+}
+
+extension MaterializedSequenceResult: Equatable where T: Equatable {
+    public static func == (lhs: MaterializedSequenceResult<T>, rhs: MaterializedSequenceResult<T>) -> Bool {
+        switch (lhs, rhs) {
+        case let (.completed(elements: left), .completed(elements: right)):
+            return left == right
+        case let (.failed(elements: left, error: leftError), .failed(elements: right, error: rightError)):
+            return left == right && leftError.localizedDescription == rightError.localizedDescription
+        default:
+            return false
+        }
     }
 }
