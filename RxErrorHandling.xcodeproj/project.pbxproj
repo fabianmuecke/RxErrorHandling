@@ -1,0 +1,886 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EFBBFA8D24B5FD9000FD426D /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9624B5FA0900077610 /* Nimble.framework */; };
+		EFBBFA8E24B5FD9000FD426D /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9924B5FA0900077610 /* Quick.framework */; };
+		EFBBFA8F24B5FD9000FD426D /* QuickSwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9824B5FA0900077610 /* QuickSwiftCheck.framework */; };
+		EFBBFA9024B5FD9000FD426D /* RxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9524B5FA0900077610 /* RxBlocking.framework */; };
+		EFBBFA9224B5FD9000FD426D /* RxNimbleRxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9324B5FA0900077610 /* RxNimbleRxBlocking.framework */; };
+		EFBBFA9324B5FD9000FD426D /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9724B5FA0900077610 /* RxSwift.framework */; };
+		EFBBFA9424B5FD9000FD426D /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF67FC9A24B5FA0900077610 /* SwiftCheck.framework */; };
+		EFBBFAA224B5FE4700FD426D /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFAA024B5FE3400FD426D /* RxRelay.framework */; };
+		EFBBFAA324B5FE6D00FD426D /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9624B5FA0900077610 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA424B5FE6D00FD426D /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9924B5FA0900077610 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA524B5FE6D00FD426D /* QuickSwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9824B5FA0900077610 /* QuickSwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA624B5FE6D00FD426D /* RxBlocking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9524B5FA0900077610 /* RxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA724B5FE6D00FD426D /* RxNimbleRxBlocking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9324B5FA0900077610 /* RxNimbleRxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA824B5FE6D00FD426D /* RxRelay.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFAA024B5FE3400FD426D /* RxRelay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAA924B5FE6D00FD426D /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9724B5FA0900077610 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAAA24B5FE6D00FD426D /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EF67FC9A24B5FA0900077610 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAAF24B5FF0700FD426D /* RxErrorHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* RxErrorHandlingTests.swift */; };
+		EFBBFAB024B5FF0700FD426D /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* XCTestManifests.swift */; };
+		EFBBFAD224B5FF4E00FD426D /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACA24B5FF4500FD426D /* Nimble.framework */; };
+		EFBBFAD324B5FF4E00FD426D /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFAD124B5FF4600FD426D /* Quick.framework */; };
+		EFBBFAD424B5FF4E00FD426D /* QuickSwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACF24B5FF4500FD426D /* QuickSwiftCheck.framework */; };
+		EFBBFAD524B5FF4E00FD426D /* RxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACB24B5FF4500FD426D /* RxBlocking.framework */; };
+		EFBBFAD624B5FF4E00FD426D /* RxNimbleRxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACE24B5FF4500FD426D /* RxNimbleRxBlocking.framework */; };
+		EFBBFAD724B5FF4E00FD426D /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACD24B5FF4500FD426D /* RxRelay.framework */; };
+		EFBBFAD824B5FF4E00FD426D /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFACC24B5FF4500FD426D /* RxSwift.framework */; };
+		EFBBFAD924B5FF4E00FD426D /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFBBFAD024B5FF4500FD426D /* SwiftCheck.framework */; };
+		EFBBFADA24B5FF5300FD426D /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACA24B5FF4500FD426D /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFADB24B5FF5300FD426D /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFAD124B5FF4600FD426D /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFADC24B5FF5300FD426D /* QuickSwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACF24B5FF4500FD426D /* QuickSwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFADD24B5FF5300FD426D /* RxBlocking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACB24B5FF4500FD426D /* RxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFADE24B5FF5300FD426D /* RxNimbleRxBlocking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACE24B5FF4500FD426D /* RxNimbleRxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFADF24B5FF5300FD426D /* RxRelay.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACD24B5FF4500FD426D /* RxRelay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAE024B5FF5300FD426D /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFACC24B5FF4500FD426D /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EFBBFAE124B5FF5300FD426D /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = EFBBFAD024B5FF4500FD426D /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		OBJ_839 /* RxCocoa+Treatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* RxCocoa+Treatable.swift */; };
+		OBJ_876 /* TreatableSequenceType+SingleTrait+zip+arity+mapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* TreatableSequenceType+SingleTrait+zip+arity+mapError.swift */; };
+		OBJ_877 /* TreatableSequenceType+SingleTrait+zip+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* TreatableSequenceType+SingleTrait+zip+arity.swift */; };
+		OBJ_878 /* TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift */; };
+		OBJ_879 /* TreatableSequenceType+TreatableTrait+combineLatest+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* TreatableSequenceType+TreatableTrait+combineLatest+arity.swift */; };
+		OBJ_880 /* TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift */; };
+		OBJ_881 /* TreatableSequenceType+TreatableTrait+zip+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* TreatableSequenceType+TreatableTrait+zip+arity.swift */; };
+		OBJ_882 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Helpers.swift */; };
+		OBJ_883 /* ObservableConvertibleType+Treatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ObservableConvertibleType+Treatable.swift */; };
+		OBJ_884 /* PrimitiveTreatableTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* PrimitiveTreatableTrait.swift */; };
+		OBJ_885 /* Treatable+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Treatable+Operators.swift */; };
+		OBJ_886 /* Treatable+PrimitiveSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Treatable+PrimitiveSequence.swift */; };
+		OBJ_887 /* Treatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* Treatable.swift */; };
+		OBJ_888 /* TreatableCompletable+AndThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* TreatableCompletable+AndThen.swift */; };
+		OBJ_889 /* TreatableCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* TreatableCompletable.swift */; };
+		OBJ_890 /* TreatableMaybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* TreatableMaybe.swift */; };
+		OBJ_891 /* TreatableSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* TreatableSequence.swift */; };
+		OBJ_892 /* TreatableSequenceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* TreatableSequenceType.swift */; };
+		OBJ_893 /* TreatableSingle+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* TreatableSingle+Operators.swift */; };
+		OBJ_894 /* TreatableSingle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* TreatableSingle.swift */; };
+		OBJ_914 /* RxErrorHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* RxErrorHandlingTests.swift */; };
+		OBJ_915 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* XCTestManifests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EF67FC7B24B5EFBE00077610 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "RxErrorHandling::RxErrorHandling";
+			remoteInfo = RxErrorHandling;
+		};
+		EF67FCA424B5FADB00077610 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "RxErrorHandling::RxErrorHandling";
+			remoteInfo = RxErrorHandling;
+		};
+		EFBBFAAD24B5FF0700FD426D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "RxErrorHandling::RxErrorHandling";
+			remoteInfo = RxErrorHandling;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EFBBFA9724B5FDCD00FD426D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EFBBFAA324B5FE6D00FD426D /* Nimble.framework in CopyFiles */,
+				EFBBFAA424B5FE6D00FD426D /* Quick.framework in CopyFiles */,
+				EFBBFAA524B5FE6D00FD426D /* QuickSwiftCheck.framework in CopyFiles */,
+				EFBBFAA624B5FE6D00FD426D /* RxBlocking.framework in CopyFiles */,
+				EFBBFAA724B5FE6D00FD426D /* RxNimbleRxBlocking.framework in CopyFiles */,
+				EFBBFAA824B5FE6D00FD426D /* RxRelay.framework in CopyFiles */,
+				EFBBFAA924B5FE6D00FD426D /* RxSwift.framework in CopyFiles */,
+				EFBBFAAA24B5FE6D00FD426D /* SwiftCheck.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFBBFABA24B5FF0700FD426D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EFBBFADA24B5FF5300FD426D /* Nimble.framework in CopyFiles */,
+				EFBBFADB24B5FF5300FD426D /* Quick.framework in CopyFiles */,
+				EFBBFADC24B5FF5300FD426D /* QuickSwiftCheck.framework in CopyFiles */,
+				EFBBFADD24B5FF5300FD426D /* RxBlocking.framework in CopyFiles */,
+				EFBBFADE24B5FF5300FD426D /* RxNimbleRxBlocking.framework in CopyFiles */,
+				EFBBFADF24B5FF5300FD426D /* RxRelay.framework in CopyFiles */,
+				EFBBFAE024B5FF5300FD426D /* RxSwift.framework in CopyFiles */,
+				EFBBFAE124B5FF5300FD426D /* SwiftCheck.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EF67FC9324B5FA0900077610 /* RxNimbleRxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxNimbleRxBlocking.framework; path = Carthage/Build/Mac/RxNimbleRxBlocking.framework; sourceTree = "<group>"; };
+		EF67FC9524B5FA0900077610 /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/Mac/RxBlocking.framework; sourceTree = "<group>"; };
+		EF67FC9624B5FA0900077610 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = "<group>"; };
+		EF67FC9724B5FA0900077610 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
+		EF67FC9824B5FA0900077610 /* QuickSwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickSwiftCheck.framework; path = Carthage/Build/Mac/QuickSwiftCheck.framework; sourceTree = "<group>"; };
+		EF67FC9924B5FA0900077610 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
+		EF67FC9A24B5FA0900077610 /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = Carthage/Build/Mac/SwiftCheck.framework; sourceTree = "<group>"; };
+		EFBBFAA024B5FE3400FD426D /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = Carthage/Build/Mac/RxRelay.framework; sourceTree = "<group>"; };
+		EFBBFAC624B5FF0700FD426D /* RxErrorHandlingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxErrorHandlingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFBBFACA24B5FF4500FD426D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		EFBBFACB24B5FF4500FD426D /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/iOS/RxBlocking.framework; sourceTree = "<group>"; };
+		EFBBFACC24B5FF4500FD426D /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		EFBBFACD24B5FF4500FD426D /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = Carthage/Build/iOS/RxRelay.framework; sourceTree = "<group>"; };
+		EFBBFACE24B5FF4500FD426D /* RxNimbleRxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxNimbleRxBlocking.framework; path = Carthage/Build/iOS/RxNimbleRxBlocking.framework; sourceTree = "<group>"; };
+		EFBBFACF24B5FF4500FD426D /* QuickSwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickSwiftCheck.framework; path = Carthage/Build/iOS/QuickSwiftCheck.framework; sourceTree = "<group>"; };
+		EFBBFAD024B5FF4500FD426D /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = Carthage/Build/iOS/SwiftCheck.framework; sourceTree = "<group>"; };
+		EFBBFAD124B5FF4600FD426D /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		OBJ_11 /* Sourcery.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = Sourcery.yml; sourceTree = "<group>"; };
+		OBJ_13 /* TreatableSequenceType+SingleTrait+zip+arity+mapError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+SingleTrait+zip+arity+mapError.swift"; sourceTree = "<group>"; };
+		OBJ_14 /* TreatableSequenceType+SingleTrait+zip+arity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+SingleTrait+zip+arity.swift"; sourceTree = "<group>"; };
+		OBJ_15 /* TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift"; sourceTree = "<group>"; };
+		OBJ_16 /* TreatableSequenceType+TreatableTrait+combineLatest+arity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+TreatableTrait+combineLatest+arity.swift"; sourceTree = "<group>"; };
+		OBJ_17 /* TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift"; sourceTree = "<group>"; };
+		OBJ_18 /* TreatableSequenceType+TreatableTrait+zip+arity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSequenceType+TreatableTrait+zip+arity.swift"; sourceTree = "<group>"; };
+		OBJ_19 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		OBJ_20 /* ObservableConvertibleType+Treatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableConvertibleType+Treatable.swift"; sourceTree = "<group>"; };
+		OBJ_21 /* PrimitiveTreatableTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveTreatableTrait.swift; sourceTree = "<group>"; };
+		OBJ_22 /* Treatable+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Treatable+Operators.swift"; sourceTree = "<group>"; };
+		OBJ_23 /* Treatable+PrimitiveSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Treatable+PrimitiveSequence.swift"; sourceTree = "<group>"; };
+		OBJ_24 /* Treatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Treatable.swift; sourceTree = "<group>"; };
+		OBJ_25 /* TreatableCompletable+AndThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableCompletable+AndThen.swift"; sourceTree = "<group>"; };
+		OBJ_26 /* TreatableCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatableCompletable.swift; sourceTree = "<group>"; };
+		OBJ_27 /* TreatableMaybe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatableMaybe.swift; sourceTree = "<group>"; };
+		OBJ_28 /* TreatableSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatableSequence.swift; sourceTree = "<group>"; };
+		OBJ_29 /* TreatableSequenceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatableSequenceType.swift; sourceTree = "<group>"; };
+		OBJ_30 /* TreatableSingle+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatableSingle+Operators.swift"; sourceTree = "<group>"; };
+		OBJ_31 /* TreatableSingle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatableSingle.swift; sourceTree = "<group>"; };
+		OBJ_34 /* RxErrorHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxErrorHandlingTests.swift; sourceTree = "<group>"; };
+		OBJ_35 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_503 /* ArityWithError.stencil */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArityWithError.stencil; sourceTree = "<group>"; };
+		OBJ_504 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		OBJ_505 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_506 /* Cartfile.private */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.private; sourceTree = "<group>"; };
+		OBJ_507 /* Arity.stencil */ = {isa = PBXFileReference; lastKnownFileType = text; path = Arity.stencil; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* RxCocoa+Treatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxCocoa+Treatable.swift"; sourceTree = "<group>"; };
+		"RxErrorHandling::RxCocoa+ErrorHandling::Product" /* RxCocoa_ErrorHandling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa_ErrorHandling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"RxErrorHandling::RxErrorHandling::Product" /* RxErrorHandling.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxErrorHandling.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"RxErrorHandling::RxErrorHandlingTests::Product" /* RxErrorHandlingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = RxErrorHandlingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EFBBFAB124B5FF0700FD426D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				EFBBFAD224B5FF4E00FD426D /* Nimble.framework in Frameworks */,
+				EFBBFAD324B5FF4E00FD426D /* Quick.framework in Frameworks */,
+				EFBBFAD424B5FF4E00FD426D /* QuickSwiftCheck.framework in Frameworks */,
+				EFBBFAD524B5FF4E00FD426D /* RxBlocking.framework in Frameworks */,
+				EFBBFAD624B5FF4E00FD426D /* RxNimbleRxBlocking.framework in Frameworks */,
+				EFBBFAD724B5FF4E00FD426D /* RxRelay.framework in Frameworks */,
+				EFBBFAD824B5FF4E00FD426D /* RxSwift.framework in Frameworks */,
+				EFBBFAD924B5FF4E00FD426D /* SwiftCheck.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_840 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_895 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_916 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				EFBBFA8D24B5FD9000FD426D /* Nimble.framework in Frameworks */,
+				EFBBFA8E24B5FD9000FD426D /* Quick.framework in Frameworks */,
+				EFBBFA8F24B5FD9000FD426D /* QuickSwiftCheck.framework in Frameworks */,
+				EFBBFA9024B5FD9000FD426D /* RxBlocking.framework in Frameworks */,
+				EFBBFA9224B5FD9000FD426D /* RxNimbleRxBlocking.framework in Frameworks */,
+				EFBBFA9324B5FD9000FD426D /* RxSwift.framework in Frameworks */,
+				EFBBFA9424B5FD9000FD426D /* SwiftCheck.framework in Frameworks */,
+				EFBBFAA224B5FE4700FD426D /* RxRelay.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EF67FC7F24B5F0C300077610 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				EFBBFAC924B5FF2300FD426D /* iOS */,
+				EFBBFAC824B5FF1900FD426D /* Mac */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		EF67FC8824B5F83400077610 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EFBBFAC824B5FF1900FD426D /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				EF67FC9624B5FA0900077610 /* Nimble.framework */,
+				EF67FC9924B5FA0900077610 /* Quick.framework */,
+				EF67FC9824B5FA0900077610 /* QuickSwiftCheck.framework */,
+				EF67FC9524B5FA0900077610 /* RxBlocking.framework */,
+				EF67FC9324B5FA0900077610 /* RxNimbleRxBlocking.framework */,
+				EFBBFAA024B5FE3400FD426D /* RxRelay.framework */,
+				EF67FC9724B5FA0900077610 /* RxSwift.framework */,
+				EF67FC9A24B5FA0900077610 /* SwiftCheck.framework */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
+		EFBBFAC924B5FF2300FD426D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EFBBFACA24B5FF4500FD426D /* Nimble.framework */,
+				EFBBFAD124B5FF4600FD426D /* Quick.framework */,
+				EFBBFACF24B5FF4500FD426D /* QuickSwiftCheck.framework */,
+				EFBBFACB24B5FF4500FD426D /* RxBlocking.framework */,
+				EFBBFACE24B5FF4500FD426D /* RxNimbleRxBlocking.framework */,
+				EFBBFACD24B5FF4500FD426D /* RxRelay.framework */,
+				EFBBFACC24B5FF4500FD426D /* RxSwift.framework */,
+				EFBBFAD024B5FF4500FD426D /* SwiftCheck.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		OBJ_10 /* RxErrorHandling */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_11 /* Sourcery.yml */,
+				OBJ_12 /* Generated */,
+				OBJ_19 /* Helpers.swift */,
+				OBJ_20 /* ObservableConvertibleType+Treatable.swift */,
+				OBJ_21 /* PrimitiveTreatableTrait.swift */,
+				OBJ_22 /* Treatable+Operators.swift */,
+				OBJ_23 /* Treatable+PrimitiveSequence.swift */,
+				OBJ_24 /* Treatable.swift */,
+				OBJ_25 /* TreatableCompletable+AndThen.swift */,
+				OBJ_26 /* TreatableCompletable.swift */,
+				OBJ_27 /* TreatableMaybe.swift */,
+				OBJ_28 /* TreatableSequence.swift */,
+				OBJ_29 /* TreatableSequenceType.swift */,
+				OBJ_30 /* TreatableSingle+Operators.swift */,
+				OBJ_31 /* TreatableSingle.swift */,
+			);
+			name = RxErrorHandling;
+			path = Sources/RxErrorHandling;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_12 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_13 /* TreatableSequenceType+SingleTrait+zip+arity+mapError.swift */,
+				OBJ_14 /* TreatableSequenceType+SingleTrait+zip+arity.swift */,
+				OBJ_15 /* TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift */,
+				OBJ_16 /* TreatableSequenceType+TreatableTrait+combineLatest+arity.swift */,
+				OBJ_17 /* TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift */,
+				OBJ_18 /* TreatableSequenceType+TreatableTrait+zip+arity.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
+		OBJ_32 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_33 /* RxErrorHandlingTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_33 /* RxErrorHandlingTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_34 /* RxErrorHandlingTests.swift */,
+				OBJ_35 /* XCTestManifests.swift */,
+			);
+			name = RxErrorHandlingTests;
+			path = Tests/RxErrorHandlingTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_483 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"RxErrorHandling::RxCocoa+ErrorHandling::Product" /* RxCocoa_ErrorHandling.framework */,
+				"RxErrorHandling::RxErrorHandling::Product" /* RxErrorHandling.framework */,
+				"RxErrorHandling::RxErrorHandlingTests::Product" /* RxErrorHandlingTests.xctest */,
+				EFBBFAC624B5FF0700FD426D /* RxErrorHandlingTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				OBJ_507 /* Arity.stencil */,
+				OBJ_503 /* ArityWithError.stencil */,
+				OBJ_504 /* Cartfile */,
+				OBJ_506 /* Cartfile.private */,
+				EF67FC7F24B5F0C300077610 /* Dependencies */,
+				EF67FC8824B5F83400077610 /* Frameworks */,
+				OBJ_6 /* Package.swift */,
+				OBJ_483 /* Products */,
+				OBJ_505 /* README.md */,
+				OBJ_7 /* Sources */,
+				OBJ_32 /* Tests */,
+			);
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_8 /* RxCocoa+ErrorHandling */,
+				OBJ_10 /* RxErrorHandling */,
+			);
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_8 /* RxCocoa+ErrorHandling */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* RxCocoa+Treatable.swift */,
+			);
+			name = "RxCocoa+ErrorHandling";
+			path = "Sources/RxCocoa+ErrorHandling";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EFBBFAAB24B5FF0700FD426D /* RxErrorHandlingTests-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFBBFAC324B5FF0700FD426D /* Build configuration list for PBXNativeTarget "RxErrorHandlingTests-iOS" */;
+			buildPhases = (
+				EFBBFAAE24B5FF0700FD426D /* Sources */,
+				EFBBFAB124B5FF0700FD426D /* Frameworks */,
+				EFBBFABA24B5FF0700FD426D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EFBBFAAC24B5FF0700FD426D /* PBXTargetDependency */,
+			);
+			name = "RxErrorHandlingTests-iOS";
+			productName = RxErrorHandlingTests;
+			productReference = EFBBFAC624B5FF0700FD426D /* RxErrorHandlingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		"RxErrorHandling::RxCocoa+ErrorHandling" /* RxCocoa+ErrorHandling */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_835 /* Build configuration list for PBXNativeTarget "RxCocoa+ErrorHandling" */;
+			buildPhases = (
+				OBJ_838 /* Sources */,
+				OBJ_840 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EF67FCA524B5FADB00077610 /* PBXTargetDependency */,
+			);
+			name = "RxCocoa+ErrorHandling";
+			productName = RxCocoa_ErrorHandling;
+			productReference = "RxErrorHandling::RxCocoa+ErrorHandling::Product" /* RxCocoa_ErrorHandling.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"RxErrorHandling::RxErrorHandling" /* RxErrorHandling */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_872 /* Build configuration list for PBXNativeTarget "RxErrorHandling" */;
+			buildPhases = (
+				OBJ_875 /* Sources */,
+				OBJ_895 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RxErrorHandling;
+			productName = RxErrorHandling;
+			productReference = "RxErrorHandling::RxErrorHandling::Product" /* RxErrorHandling.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"RxErrorHandling::RxErrorHandlingTests" /* RxErrorHandlingTests-Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_910 /* Build configuration list for PBXNativeTarget "RxErrorHandlingTests-Mac" */;
+			buildPhases = (
+				OBJ_913 /* Sources */,
+				OBJ_916 /* Frameworks */,
+				EFBBFA9724B5FDCD00FD426D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_945 /* PBXTargetDependency */,
+			);
+			name = "RxErrorHandlingTests-Mac";
+			productName = RxErrorHandlingTests;
+			productReference = "RxErrorHandling::RxErrorHandlingTests::Product" /* RxErrorHandlingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftMigration = 9999;
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "RxErrorHandling" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_483 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				"RxErrorHandling::RxCocoa+ErrorHandling" /* RxCocoa+ErrorHandling */,
+				"RxErrorHandling::RxErrorHandling" /* RxErrorHandling */,
+				"RxErrorHandling::RxErrorHandlingTests" /* RxErrorHandlingTests-Mac */,
+				EFBBFAAB24B5FF0700FD426D /* RxErrorHandlingTests-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EFBBFAAE24B5FF0700FD426D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				EFBBFAAF24B5FF0700FD426D /* RxErrorHandlingTests.swift in Sources */,
+				EFBBFAB024B5FF0700FD426D /* XCTestManifests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_838 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_839 /* RxCocoa+Treatable.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_875 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_876 /* TreatableSequenceType+SingleTrait+zip+arity+mapError.swift in Sources */,
+				OBJ_877 /* TreatableSequenceType+SingleTrait+zip+arity.swift in Sources */,
+				OBJ_878 /* TreatableSequenceType+TreatableTrait+combineLatest+arity+mapError.swift in Sources */,
+				OBJ_879 /* TreatableSequenceType+TreatableTrait+combineLatest+arity.swift in Sources */,
+				OBJ_880 /* TreatableSequenceType+TreatableTrait+zip+arity+mapError.swift in Sources */,
+				OBJ_881 /* TreatableSequenceType+TreatableTrait+zip+arity.swift in Sources */,
+				OBJ_882 /* Helpers.swift in Sources */,
+				OBJ_883 /* ObservableConvertibleType+Treatable.swift in Sources */,
+				OBJ_884 /* PrimitiveTreatableTrait.swift in Sources */,
+				OBJ_885 /* Treatable+Operators.swift in Sources */,
+				OBJ_886 /* Treatable+PrimitiveSequence.swift in Sources */,
+				OBJ_887 /* Treatable.swift in Sources */,
+				OBJ_888 /* TreatableCompletable+AndThen.swift in Sources */,
+				OBJ_889 /* TreatableCompletable.swift in Sources */,
+				OBJ_890 /* TreatableMaybe.swift in Sources */,
+				OBJ_891 /* TreatableSequence.swift in Sources */,
+				OBJ_892 /* TreatableSequenceType.swift in Sources */,
+				OBJ_893 /* TreatableSingle+Operators.swift in Sources */,
+				OBJ_894 /* TreatableSingle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_913 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_914 /* RxErrorHandlingTests.swift in Sources */,
+				OBJ_915 /* XCTestManifests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EF67FCA524B5FADB00077610 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "RxErrorHandling::RxErrorHandling" /* RxErrorHandling */;
+			targetProxy = EF67FCA424B5FADB00077610 /* PBXContainerItemProxy */;
+		};
+		EFBBFAAC24B5FF0700FD426D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "RxErrorHandling::RxErrorHandling" /* RxErrorHandling */;
+			targetProxy = EFBBFAAD24B5FF0700FD426D /* PBXContainerItemProxy */;
+		};
+		OBJ_945 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "RxErrorHandling::RxErrorHandling" /* RxErrorHandling */;
+			targetProxy = EF67FC7B24B5EFBE00077610 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EFBBFAC424B5FF0700FD426D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandlingTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandlingTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		EFBBFAC524B5FF0700FD426D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandlingTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandlingTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = "$(PROJECT_DIR)/Carthage/Build/Mac";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = "$(PROJECT_DIR)/Carthage/Build/Mac";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		OBJ_836 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxCocoa_ErrorHandling_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "RxCocoa-ErrorHandling";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = "RxCocoa+ErrorHandling";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_837 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxCocoa_ErrorHandling_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "RxCocoa-ErrorHandling";
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = "RxCocoa+ErrorHandling";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_873 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandling_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = RxErrorHandling;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandling;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_874 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandling_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = RxErrorHandling;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandling;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_911 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandlingTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandlingTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_912 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = RxErrorHandling.xcodeproj/RxErrorHandlingTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = RxErrorHandlingTests;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EFBBFAC324B5FF0700FD426D /* Build configuration list for PBXNativeTarget "RxErrorHandlingTests-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFBBFAC424B5FF0700FD426D /* Debug */,
+				EFBBFAC524B5FF0700FD426D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_2 /* Build configuration list for PBXProject "RxErrorHandling" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_835 /* Build configuration list for PBXNativeTarget "RxCocoa+ErrorHandling" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_836 /* Debug */,
+				OBJ_837 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_872 /* Build configuration list for PBXNativeTarget "RxErrorHandling" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_873 /* Debug */,
+				OBJ_874 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_910 /* Build configuration list for PBXNativeTarget "RxErrorHandlingTests-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_911 /* Debug */,
+				OBJ_912 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}

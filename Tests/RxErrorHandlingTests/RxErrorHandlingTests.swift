@@ -4,7 +4,7 @@ import Quick
 import QuickSwiftCheck
 import RxBlocking
 @testable import RxErrorHandling
-import RxNimble
+import RxNimbleRxBlocking
 import RxSwift
 import SwiftCheck
 
@@ -184,7 +184,7 @@ private func callObserver<Element: Arbitrary, Failure>(observer: @escaping Treat
 }
 
 private func waitTime(_ values: [TestValue<Int, InitialError>]) -> DispatchTimeInterval {
-    .milliseconds(10 + values.reduce(0) { result, next in
+    .milliseconds(100 + values.reduce(0) { result, next in
         switch next {
         case let .next(_, after: interval),
              let .error(_, after: interval):
