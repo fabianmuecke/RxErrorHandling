@@ -37,13 +37,10 @@ extension ObservableConvertibleType {
             case let .failure(error):
                 return .error(error)
             }
-        }.catchError { error in
-            #if DEBUG
-                fatalError("An observable which should never fail produced an error: \(error)")
-            #else
-                print("An observable which should never fail produced an error: \(error)")
-            #endif
-        })
+        }
+        .do(onError: { error in
+            rxFatalErrorInDebug("An observable which should never fail produced an error: \(error)")
+        }))
     }
 }
 
