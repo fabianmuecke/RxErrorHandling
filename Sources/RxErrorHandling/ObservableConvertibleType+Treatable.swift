@@ -9,7 +9,7 @@ import RxSwift
 
 extension ObservableConvertibleType {
     public func asTreatable() -> Treatable<Element, Swift.Error> {
-        Treatable(raw: asObservable().catchError { .error($0) })
+        Treatable(raw: asObservable())
     }
 
     public func asTreatable<Failure>(mapError: @escaping (Error) -> Failure) -> Treatable<Element, Failure> {
@@ -20,15 +20,15 @@ extension ObservableConvertibleType {
         Treatable(raw: asObservable().catchErrorJustReturn(element))
     }
 
-    public func asTreatable(onErrorTreatWith: @escaping (Error) -> Treatable<Element, Never>)
-        -> Treatable<Element, Never> {
+    public func asTreatable<Failure>(onErrorTreatWith: @escaping (Error) -> Treatable<Element, Failure>)
+        -> Treatable<Element, Failure> {
         Treatable(raw: asObservable().catchError { error in
             onErrorTreatWith(error).asObservable()
         })
     }
 
     /// Make sure your source Observable already catches all errors and returns Result.failure instead. Otherwise using this function is unsafe.
-    public func asTreatable<Success, Failure>() -> Treatable<Success, Failure>
+    public func asTreatableFromResult<Success, Failure>() -> Treatable<Success, Failure>
         where Element == Swift.Result<Success, Failure> {
         Treatable(raw: asObservable().flatMap { (element: Result<Success, Failure>) -> Observable<Success> in
             switch element {
@@ -46,3 +46,7 @@ extension ObservableConvertibleType {
         })
     }
 }
+
+enum MyError: Swift.Error {}
+let obs: Observable<Result<Void, MyError>> = .empty()
+let astreatable = obs.asTreatableFromResult()

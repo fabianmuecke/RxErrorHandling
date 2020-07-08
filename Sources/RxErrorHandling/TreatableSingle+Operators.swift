@@ -15,8 +15,8 @@ extension TreatableSequenceType where Trait == SingleTrait {
 
      - parameter onSuccess: Action to invoke for each element in the observable sequence.
      - parameter afterSuccess: Action to invoke for each element after the observable has passed an onNext event along to its downstream.
-     - parameter onError: Action to invoke upon errored termination of the observable sequence.
-     - parameter afterError: Action to invoke after errored termination of the observable sequence.
+     - parameter onFailure: Action to invoke upon errored termination of the observable sequence.
+     - parameter afterFailure: Action to invoke after errored termination of the observable sequence.
      - parameter onSubscribe: Action to invoke before subscribing to source observable sequence.
      - parameter onSubscribed: Action to invoke after subscribing to source observable sequence.
      - parameter onDispose: Action to invoke after subscription to source observable has been disposed for any reason. It can be either because sequence terminates for some reason or observer subscription being disposed.
@@ -30,9 +30,9 @@ extension TreatableSequenceType where Trait == SingleTrait {
                      onSubscribed: (() -> Void)? = nil,
                      onDispose: (() -> Void)? = nil)
         -> TreatableSingle<Element, Failure> {
-        TreatableSingle(raw: treatableSequence.source.do(
-            onNext: onSuccess,
-            afterNext: afterSuccess,
+        TreatableSingle(raw: treatableSequence.asSingle().do(
+            onSuccess: onSuccess,
+            afterSuccess: afterSuccess,
             onError: onFailure.map { call in { call($0 as! Failure) } },
             afterError: afterFailure.map { call in { call($0 as! Failure) } },
             onSubscribe: onSubscribe,

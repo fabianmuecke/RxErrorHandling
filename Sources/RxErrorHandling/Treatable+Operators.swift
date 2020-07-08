@@ -46,7 +46,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
      */
     public func mapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>)
         -> Treatable<NewElement, Failure> {
-        asObservable().map(transform).asTreatable()
+        asObservable().map(transform).asTreatableFromResult()
     }
 
     /**
@@ -58,7 +58,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
     public func mapResult<NewElement, NewFailure>(
         _ transform: @escaping (Result<Element, Failure>) -> Result<NewElement, NewFailure>)
         -> Treatable<NewElement, NewFailure> {
-        asObservableResult().map(transform).asTreatable()
+        asObservableResult().map(transform).asTreatableFromResult()
     }
 
     /**
@@ -126,7 +126,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
      */
     public func compactMapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>?)
         -> Treatable<NewElement, Failure> {
-        asObservable().compactMap(transform).asTreatable()
+        asObservable().compactMap(transform).asTreatableFromResult()
     }
 
     /**
@@ -175,7 +175,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
      - returns: An observable sequence that contains elements from the input sequence that satisfy the condition.
      */
     public func filterResult(_ predicate: @escaping (Result<Element, Failure>) -> Bool) -> Treatable<Element, Failure> {
-        asObservableResult().filter(predicate).asTreatable()
+        asObservableResult().filter(predicate).asTreatableFromResult()
     }
 
     /**
@@ -184,7 +184,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
      - parameter predicate: A function to test each source element for a condition.
      - returns: An observable sequence that contains elements from the input sequence that satisfy the condition.
      */
-    public func filterError(_ predicate: @escaping (Failure) -> Bool) -> Treatable<Element, Failure> {
+    public func filterFailure(_ predicate: @escaping (Failure) -> Bool) -> Treatable<Element, Failure> {
         asObservableResult().filter { element in
             switch element {
             case .success:
@@ -192,7 +192,7 @@ extension TreatableSequenceType where Trait == TreatableTrait {
             case let .failure(error):
                 return predicate(error)
             }
-        }.asTreatable()
+        }.asTreatableFromResult()
     }
 }
 
@@ -265,8 +265,10 @@ extension TreatableSequenceType where Trait == TreatableTrait {
 
      - parameter onNext: Action to invoke for each element in the observable sequence.
      - parameter afterNext: Action to invoke for each element after the observable has passed an onNext event along to its downstream.
-     - parameter onCompleted: Action to invoke upon termination of the observable sequence.
-     - parameter afterCompleted: Action to invoke after termination of the observable sequence.
+     - parameter onFailure: Action to invoke upon errored termination of the observable sequence.
+     - parameter afterFailure: Action to invoke after errored termination of the observable sequence.
+     - parameter onCompleted: Action to invoke upon graceful termination of the observable sequence.
+     - parameter afterCompleted: Action to invoke after graceful termination of the observable sequence.
      - parameter onSubscribe: Action to invoke before subscribing to source observable sequence.
      - parameter onSubscribed: Action to invoke after subscribing to source observable sequence.
      - parameter onDispose: Action to invoke after subscription to source observable has been disposed for any reason. It can be either because sequence terminates for some reason or observer subscription being disposed.
@@ -275,8 +277,10 @@ extension TreatableSequenceType where Trait == TreatableTrait {
     public func `do`(
         onNext: ((Element) -> Void)? = nil,
         afterNext: ((Element) -> Void)? = nil,
-        onCompleted: ((TreatableEvent<Element, Failure>.Completion) -> Void)? = nil,
-        afterCompleted: ((TreatableEvent<Element, Failure>.Completion) -> Void)? = nil,
+        onFailure: ((Failure) -> Void)? = nil,
+        afterFailure: ((Failure) -> Void)? = nil,
+        onCompleted: (() -> Void)? = nil,
+        afterCompleted: (() -> Void)? = nil,
         onSubscribe: (() -> Void)? = nil,
         onSubscribed: (() -> Void)? = nil,
         onDispose: (() -> Void)? = nil
@@ -286,10 +290,10 @@ extension TreatableSequenceType where Trait == TreatableTrait {
             .do(
                 onNext: onNext,
                 afterNext: afterNext,
-                onError: onCompleted.map { call in { failure in call(.failure(failure as! Failure)) } },
-                afterError: afterCompleted.map { call in { failure in call(.failure(failure as! Failure)) } },
-                onCompleted: onCompleted.map { call in { call(.finished) } },
-                afterCompleted: afterCompleted.map { call in { call(.finished) } },
+                onError: onFailure.map { call in { failure in call(failure as! Failure) } },
+                afterError: afterFailure.map { call in { failure in call(failure as! Failure) } },
+                onCompleted: onCompleted,
+                afterCompleted: afterCompleted,
                 onSubscribe: onSubscribe,
                 onSubscribed: onSubscribed,
                 onDispose: onDispose

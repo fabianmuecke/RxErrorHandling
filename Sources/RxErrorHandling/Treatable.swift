@@ -34,7 +34,7 @@ extension TreatableSequence where Trait == TreatableTrait {
         .init(raw: Observable.just(element))
     }
 
-    public static func error(_ error: Failure) -> Self {
+    public static func failure(_ error: Failure) -> Self {
         .init(raw: Observable.error(error))
     }
 

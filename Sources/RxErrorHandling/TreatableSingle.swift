@@ -18,7 +18,7 @@ public enum TreatableSingleEvent<Element, Failure: Swift.Error> {
     case failure(Failure)
 }
 
-extension TreatableSequence where Trait == SingleTrait {
+extension TreatableSequenceType where Trait == SingleTrait {
     /**
      Returns a non-terminating observable sequence, which can be used to denote an infinite duration.
 
@@ -26,7 +26,7 @@ extension TreatableSequence where Trait == SingleTrait {
 
      - returns: An observable sequence whose observers will never get called.
      */
-    public static func never() -> Self {
+    public static func never() -> TreatableSingle<Element, Failure> {
         .init(raw: Single.never())
     }
 
@@ -38,7 +38,7 @@ extension TreatableSequence where Trait == SingleTrait {
      - parameter element: Single element in the resulting observable sequence.
      - returns: An observable sequence containing the single specified element.
      */
-    public static func just(_ element: Element) -> Self {
+    public static func just(_ element: Element) -> TreatableSingle<Element, Failure> {
         .init(raw: Single.just(element))
     }
 
@@ -51,7 +51,8 @@ extension TreatableSequence where Trait == SingleTrait {
      - parameter scheduler: Scheduler to send the single element on.
      - returns: An observable sequence containing the single specified element.
      */
-    public static func just(_ element: Element, scheduler: ImmediateSchedulerType) -> Self {
+    public static func just(_ element: Element,
+                            scheduler: ImmediateSchedulerType) -> TreatableSingle<Element, Failure> {
         .init(raw: Observable.just(element, scheduler: scheduler))
     }
 
@@ -62,12 +63,12 @@ extension TreatableSequence where Trait == SingleTrait {
 
      - returns: The observable sequence that terminates with specified error.
      */
-    public static func error(_ error: Failure) -> Self {
+    public static func failure(_ error: Failure) -> TreatableSingle<Element, Failure> {
         .init(raw: Single.error(error))
     }
 }
 
-extension TreatableSequence where Trait == SingleTrait {
+extension TreatableSequenceType where Trait == SingleTrait {
     public typealias SingleObserver = (TreatableSingleEvent<Element, Failure>) -> Void
 
     public static func create(subscribe: @escaping (@escaping SingleObserver) -> Disposable)
@@ -88,7 +89,7 @@ extension TreatableSequence where Trait == SingleTrait {
     }
 }
 
-extension TreatableSequence where Trait == SingleTrait {
+extension TreatableSequenceType where Trait == SingleTrait {
     public func treat(_ observer: @escaping SingleObserver) -> Disposable {
         var stopped = false
         return treatableSequence.asObservable().subscribe { event in
@@ -107,7 +108,7 @@ extension TreatableSequence where Trait == SingleTrait {
     }
 }
 
-extension TreatableSequence where Trait == SingleTrait, Failure == Never {
+extension TreatableSequenceType where Trait == SingleTrait, Failure == Never {
     public func treat(onSuccess: @escaping (Element) -> Void) -> Disposable {
         treatableSequence.treat { (event: TreatableSingleEvent) in
             switch event {
