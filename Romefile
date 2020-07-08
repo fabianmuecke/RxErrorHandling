@@ -1,0 +1,13 @@
+cache:
+  local: ~/Developer/rome-cache-error-handling
+
+repositoryMap:
+- RxSwift:
+  - name: RxSwift
+  - name: RxRelay
+  - name: RxCocoa
+  - name: RxTest
+  - name: RxBlocking
+- RxNimble:
+  - name: RxNimbleRxTest
+  - name: RxNimbleRxBlocking
