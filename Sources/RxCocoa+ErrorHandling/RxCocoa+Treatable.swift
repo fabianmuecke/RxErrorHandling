@@ -8,19 +8,19 @@
 import RxCocoa
 @testable import RxErrorHandling
 
-extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
+public extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
     func asTreatable() -> Treatable<Element, Never> {
         Treatable(raw: asObservable())
     }
 }
 
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
     func asTreatable() -> Treatable<Element, Never> {
         Treatable(raw: asObservable())
     }
 }
 
-extension TreatableSequenceType where Failure == Never {
+public extension TreatableSequenceType where Failure == Never {
     func asSignal() -> Signal<Element> {
         asSignal(onErrorSignalWith: .empty())
     }
@@ -30,7 +30,7 @@ extension TreatableSequenceType where Failure == Never {
     }
 }
 
-extension TreatableSequenceType {
+public extension TreatableSequenceType {
     func asSignal() -> Signal<Result<Element, Failure>> {
         asObservableResult().asSignal(onErrorSignalWith: .empty())
     }
