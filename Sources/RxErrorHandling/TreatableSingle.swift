@@ -72,7 +72,7 @@ extension TreatableSequenceType where Trait == SingleTrait {
     public typealias SingleObserver = (TreatableSingleEvent<Element, Failure>) -> Void
 
     public static func create(subscribe: @escaping (@escaping SingleObserver) -> Disposable)
-        -> Treatable<Element, Failure> {
+        -> TreatableSingle<Element, Failure> {
         let source = Observable<Element>.create { observer in
             subscribe { event in
                 switch event {
@@ -85,7 +85,7 @@ extension TreatableSequenceType where Trait == SingleTrait {
             }
         }
 
-        return Treatable(raw: source)
+        return TreatableSingle(raw: source)
     }
 }
 
