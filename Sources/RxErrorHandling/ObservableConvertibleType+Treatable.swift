@@ -43,7 +43,3 @@ extension ObservableConvertibleType {
         }))
     }
 }
-
-enum MyError: Swift.Error {}
-let obs: Observable<Result<Void, MyError>> = .empty()
-let astreatable = obs.asTreatableFromResult()
