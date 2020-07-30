@@ -37,39 +37,6 @@ extension TreatableSequenceType where Trait == TreatableTrait {
             }
         })
     }
-
-    /**
-     Projects each element of an observable sequence into a new form. Failure is treated as an error.
-
-     - parameter transform: A transform function to apply to each source element.
-     - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
-     */
-    public func mapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>)
-        -> Treatable<NewElement, Failure> {
-        asObservable().map(transform).asTreatableFromResult()
-    }
-
-    /**
-     Projects each element of an observable sequence into a new form. Failure is treated as an error.
-
-     - parameter transform: A transform function to apply to each source element.
-     - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
-     */
-    public func mapResult<NewElement, NewFailure>(
-        _ transform: @escaping (Result<Element, Failure>) -> Result<NewElement, NewFailure>)
-        -> Treatable<NewElement, NewFailure> {
-        asObservableResult().map(transform).asTreatableFromResult()
-    }
-
-    /**
-     Projects each error of an observable sequence into a new form.
-
-     - parameter transform: A transform function to apply to each source element.
-     - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
-     */
-    public func mapError<NewFailure>(_ transform: @escaping (Failure) -> NewFailure) -> Treatable<Element, NewFailure> {
-        Treatable(raw: asObservable().catchError { .error(transform($0 as! Failure)) })
-    }
 }
 
 // MARK: catchError
