@@ -120,9 +120,3 @@ extension TreatableSequenceType where Trait == SingleTrait, Failure == Never {
         }
     }
 }
-
-extension PrimitiveSequence where Trait == SingleTrait {
-    public func asTreatable<Failure>(mapError: @escaping (Error) -> Failure) -> TreatableSingle<Element, Failure> {
-        TreatableSingle(raw: asObservable().catchError { .error(mapError($0)) })
-    }
-}
