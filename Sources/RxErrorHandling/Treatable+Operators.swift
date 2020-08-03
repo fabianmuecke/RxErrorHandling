@@ -163,15 +163,6 @@ extension TreatableSequenceType where Trait == TreatableTrait {
     }
 }
 
-// MARK: Failure type
-
-extension TreatableSequenceType where Failure == Never {
-    // TODO: Have a custom TreatableConvertibleType for non-fallible like apple does, so setFailureType can be called again later?
-    public func setFailureType<NewFailure>(to failureType: NewFailure.Type) -> Treatable<Element, NewFailure> {
-        Treatable(raw: asObservable())
-    }
-}
-
 // MARK: switchLatest
 
 extension TreatableSequenceType where Element: TreatableSequenceType, Trait == TreatableTrait {
