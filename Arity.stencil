@@ -23,12 +23,12 @@ extension {{type.name}} where Trait == {{method.annotations.trait}} {
             _ source{{currentParam}}: O{{currentParam}},
         {% endfor %}
         resultSelector: @escaping ({% for currentParam in 1...numberOfParams %}O{{currentParam}}.Element{% if forloop.last == false %}, {% endif %}{% endfor %}) -> Element
-    ) -> Treatable<Element, Failure>
+    ) -> TreatableSequence<Trait, Element, Failure>
     where
     {% for currentParam in 1...numberOfParams %}
         O{{currentParam}}.Element == Element, O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
     {% endfor %} {
-        Treatable(raw: Observable.{{method.callName}}(
+        TreatableSequence(raw: Observable.{{method.callName}}(
             {% for currentParam in 1...numberOfParams %}
                 source{{currentParam}}.asObservable(),
             {% endfor %}
@@ -46,12 +46,12 @@ extension {{type.name}} where Trait == {{method.annotations.trait}} {
         {% for currentParam in 1...numberOfParams %}
             _ source{{currentParam}}: O{{currentParam}}{% if forloop.last == false %},{% endif %}
         {% endfor %}
-    ) -> Treatable<({% for currentParam in 1...numberOfParams %}O{{currentParam}}.Element{% if forloop.last == false %}, {% endif %}{% endfor %}), Failure>
+    ) -> TreatableSequence<Trait, ({% for currentParam in 1...numberOfParams %}O{{currentParam}}.Element{% if forloop.last == false %}, {% endif %}{% endfor %}), Failure>
     where
     {% for currentParam in 1...numberOfParams %}
         O{{currentParam}}.Element == Element, O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
     {% endfor %} {
-        Treatable(raw: Observable.{{method.callName}}(
+        TreatableSequence(raw: Observable.{{method.callName}}(
             {% for currentParam in 1...numberOfParams %}
                 source{{currentParam}}.asObservable(){% if forloop.last == false %},{% endif %}
             {% endfor %}

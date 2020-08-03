@@ -24,12 +24,12 @@ extension {{type.name}} where Trait == {{method.annotations.trait}} {
         {% endfor %}
         resultSelector: @escaping ({% for currentParam in 1...numberOfParams %}O{{currentParam}}.Element{% if forloop.last == false %}, {% endif %}{% endfor %}) throws -> Element,
         mapError: @escaping (Error) -> Failure
-    ) -> Treatable<Element, Failure>
+    ) -> TreatableSequence<Trait, Element, Failure>
     where
     {% for currentParam in 1...numberOfParams %}
         O{{currentParam}}.Element == Element, O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
     {% endfor %} {
-        Treatable(raw: Observable.{{method.callName}}(
+        TreatableSequence(raw: Observable.{{method.callName}}(
             {% for currentParam in 1...numberOfParams %}
                 source{{currentParam}}.asObservable(),
             {% endfor %}
