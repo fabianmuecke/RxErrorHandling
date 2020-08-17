@@ -74,7 +74,7 @@ extension TreatableSequenceType where Trait == MaybeTrait {
      - returns: An observable sequence containing the single specified element.
      */
     public static func just(_ element: Element) -> TreatableMaybe<Element, Failure> {
-        TreatableMaybe(raw: Observable.just(element))
+        TreatableMaybe(raw: Maybe.just(element))
     }
 
     /**
@@ -87,7 +87,7 @@ extension TreatableSequenceType where Trait == MaybeTrait {
      - returns: An observable sequence containing the single specified element.
      */
     public static func just(_ element: Element, scheduler: ImmediateSchedulerType) -> TreatableMaybe<Element, Failure> {
-        TreatableMaybe(raw: Observable.just(element, scheduler: scheduler))
+        TreatableMaybe(raw: Maybe.just(element, scheduler: scheduler))
     }
 
     /**
@@ -97,8 +97,8 @@ extension TreatableSequenceType where Trait == MaybeTrait {
 
      - returns: The observable sequence that terminates with specified error.
      */
-    public static func error(_ error: Swift.Error) -> TreatableMaybe<Element, Failure> {
-        TreatableSequence(raw: Observable.error(error))
+    public static func failure(_ failure: Failure) -> TreatableMaybe<Element, Failure> {
+        TreatableMaybe(raw: Maybe.error(failure))
     }
 
     /**

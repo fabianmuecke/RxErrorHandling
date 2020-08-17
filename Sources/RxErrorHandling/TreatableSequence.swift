@@ -74,7 +74,8 @@ extension TreatableSequence {
 
 extension TreatableSequenceType where Failure == Never {
     // TODO: Have a custom TreatableConvertibleType for non-fallible like apple does, so setFailureType can be called again later?
-    public func setFailureType<NewFailure>(to failureType: NewFailure.Type) -> TreatableSequence<Trait, Element, NewFailure> {
+    public func setFailureType<NewFailure>(to failureType: NewFailure
+        .Type) -> TreatableSequence<Trait, Element, NewFailure> {
         TreatableSequence<Trait, Element, NewFailure>(raw: asObservable())
     }
 }
@@ -120,7 +121,7 @@ extension TreatableSequenceType {
      */
     public func delaySubscription(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
-            TreatableSequence(raw: treatableSequence.source.delaySubscription(dueTime, scheduler: scheduler))
+        TreatableSequence(raw: treatableSequence.source.delaySubscription(dueTime, scheduler: scheduler))
     }
 
     /**
@@ -249,13 +250,58 @@ extension TreatableSequenceType {
      - seealso: [timeout operator on reactivex.io](http://reactivex.io/documentation/operators/timeout.html)
 
      - parameter dueTime: Maximum duration between values before a timeout occurs.
+     - parameter failure: Failure value in case of a timeout.
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
-        -> TreatableSequence<Trait, Element, Failure> {
-        TreatableSequence<Trait, Element, Failure>(raw: treatableSequence.source
-            .timeout(dueTime, scheduler: scheduler))
+    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+        -> TreatableSequence<Trait, Element, Failure> where Trait == TreatableTrait {
+        timeout(dueTime, other: .failure(failure), scheduler: scheduler)
+    }
+    
+    /**
+     Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
+
+     - seealso: [timeout operator on reactivex.io](http://reactivex.io/documentation/operators/timeout.html)
+
+     - parameter dueTime: Maximum duration between values before a timeout occurs.
+     - parameter failure: Failure value in case of a timeout.
+     - parameter scheduler: Scheduler to run the timeout timer on.
+     - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
+     */
+    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+        -> TreatableSequence<Trait, Element, Failure> where Trait == SingleTrait {
+        timeout(dueTime, other: .failure(failure), scheduler: scheduler)
+    }
+    
+    /**
+     Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
+
+     - seealso: [timeout operator on reactivex.io](http://reactivex.io/documentation/operators/timeout.html)
+
+     - parameter dueTime: Maximum duration between values before a timeout occurs.
+     - parameter failure: Failure value in case of a timeout.
+     - parameter scheduler: Scheduler to run the timeout timer on.
+     - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
+     */
+    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+        -> TreatableSequence<Trait, Element, Failure> where Trait == MaybeTrait {
+        timeout(dueTime, other: .failure(failure), scheduler: scheduler)
+    }
+    
+    /**
+     Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
+
+     - seealso: [timeout operator on reactivex.io](http://reactivex.io/documentation/operators/timeout.html)
+
+     - parameter dueTime: Maximum duration between values before a timeout occurs.
+     - parameter failure: Failure value in case of a timeout.
+     - parameter scheduler: Scheduler to run the timeout timer on.
+     - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
+     */
+    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+    -> TreatableSequence<Trait, Element, Failure> where Trait == CompletableTrait, Element == Swift.Never {
+        timeout(dueTime, other: .failure(failure), scheduler: scheduler)
     }
 
     /**
