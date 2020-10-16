@@ -4,8 +4,9 @@ import Quick
 import QuickSwiftCheck
 import RxBlocking
 @testable import RxErrorHandling
-import RxNimbleRxBlocking
+import RxNimble
 import RxSwift
+import RxTest
 import SwiftCheck
 
 final class RxErrorHandlingTests: QuickSpec {
@@ -116,6 +117,24 @@ final class RxErrorHandlingTests: QuickSpec {
                             })))
                     }
                 }
+
+                it("should not raise fatal") {
+                    let scheduler = TestScheduler(initialClock: 0)
+                    let bag = DisposeBag()
+                    let observable: Observable<String> = .error(InitialError.someExternalError)
+                    let treatable: Treatable<String, WrapperError> = observable.asTreatable(mapError: { error in
+                        WrapperError.some(error as! InitialError)
+                    })
+                    let mapped: Treatable<Int, WrapperError> = treatable.mapResult { string in
+                        .success(Int(string)!)
+                    }
+                    expect(mapped.asObservableResult())
+                        .events(scheduler: scheduler, disposeBag: bag)
+                        .to(equal([
+                            .next(0, .failure(.some(.someExternalError))),
+                            .completed(0),
+                        ]))
+                }
             }
         }
     }
@@ -157,7 +176,8 @@ private func callObserver(observer: AnyObserver<Int>, values: [TestValue<Int, In
 }
 
 private func valuesToTreatable<Element: Arbitrary,
-                               Failure>(_ values: [TestValue<Element, Failure>]) -> Treatable<Element, Failure> {
+    Failure>(_ values: [TestValue<Element, Failure>]) -> Treatable<Element, Failure>
+{
     Treatable.create { observer in
         callObserver(observer: observer, values: values, anyErrors: values.contains(where: {
             switch $0 {
@@ -171,7 +191,8 @@ private func valuesToTreatable<Element: Arbitrary,
 
 private func callObserver<Element: Arbitrary, Failure>(observer: @escaping Treatable<Element, Failure>.Observer,
                                                        values: [TestValue<Element, Failure>],
-                                                       anyErrors: Bool) {
+                                                       anyErrors: Bool)
+{
     if let first = values.first {
         var values = values
         values.remove(at: 0)
@@ -252,8 +273,7 @@ extension DispatchTimeInterval: Arbitrary {
                     .microseconds(composer.generate()),
                     .nanoseconds(composer.generate()),
                     .never,
-                ])
-            )
+                ]))
         }
     }
 }
@@ -346,4 +366,12 @@ extension MaterializedSequenceResult: Equatable where T: Equatable {
             return false
         }
     }
+}
+
+enum WrapperError: Swift.Error, Hashable {
+    case some(InitialError)
+}
+
+enum Wrapper2Error: Swift.Error, Hashable {
+    case some(WrapperError)
 }
