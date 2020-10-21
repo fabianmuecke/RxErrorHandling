@@ -10,7 +10,8 @@ import RxSwift
 public struct TreatableSequence<Trait, Element, Failure: Swift.Error> {
     let source: Observable<Element>
 
-    init<O: ObservableConvertibleType>(raw: O) where O.Element == Element {
+    // UNSAFE: Only use, if you made sure all possible occuring errors are of `Failure` type.
+    public init<O: ObservableConvertibleType>(raw: O) where O.Element == Element {
         source = raw.asObservable()
     }
 }

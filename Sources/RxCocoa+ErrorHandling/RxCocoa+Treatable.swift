@@ -6,7 +6,7 @@
 //
 
 import RxCocoa
-@testable import RxErrorHandling
+import RxErrorHandling
 
 public extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
     func asTreatable() -> Treatable<Element, Never> {

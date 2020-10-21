@@ -25,7 +25,6 @@ let package = Package(
         .package(url: "https://github.com/ReactiveX/RxSwift", .upToNextMajor(from: "5.1.1")),
         .package(url: "https://github.com/Quick/Quick", .upToNextMajor(from: "2.0.0")),
         .package(url: "https://github.com/Quick/Nimble", .upToNextMajor(from: "8.0.0")),
-        .package(url: "https://github.com/typelift/SwiftCheck", .upToNextMajor(from: "0.12.0")),
         .package(url: "https://github.com/akashivskyy/QuickSwiftCheck", .upToNextMajor(from: "3.1.0")),
         .package(url: "https://github.com/RxSwiftCommunity/RxNimble", .upToNextMajor(from: "4.7.2")),
     ],
@@ -50,7 +49,6 @@ let package = Package(
                            "Nimble",
                            .product(name: "RxBlocking", package: "RxSwift"),
                            "RxNimble",
-                           "SwiftCheck",
                            "QuickSwiftCheck"]
         ),
     ]
