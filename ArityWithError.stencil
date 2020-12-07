@@ -27,7 +27,7 @@ extension {{type.name}} where Trait == {{method.annotations.trait}} {
     ) -> TreatableSequence<Trait, Element, Failure>
     where
     {% for currentParam in 1...numberOfParams %}
-        O{{currentParam}}.Element == Element, O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
+        O{{currentParam}}.Failure == Failure{% if forloop.last == false %},{% endif %}
     {% endfor %} {
         TreatableSequence(raw: Observable.{{method.callName}}(
             {% for currentParam in 1...numberOfParams %}

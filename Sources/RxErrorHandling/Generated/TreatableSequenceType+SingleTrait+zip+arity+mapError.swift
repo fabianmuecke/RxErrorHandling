@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 //
@@ -23,8 +23,8 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -53,9 +53,9 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -87,10 +87,10 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure,
-        O4.Element == Element, O4.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure,
+        O4.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -125,11 +125,11 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure,
-        O4.Element == Element, O4.Failure == Failure,
-        O5.Element == Element, O5.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure,
+        O4.Failure == Failure,
+        O5.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -167,12 +167,12 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure,
-        O4.Element == Element, O4.Failure == Failure,
-        O5.Element == Element, O5.Failure == Failure,
-        O6.Element == Element, O6.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure,
+        O4.Failure == Failure,
+        O5.Failure == Failure,
+        O6.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -213,13 +213,13 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure,
-        O4.Element == Element, O4.Failure == Failure,
-        O5.Element == Element, O5.Failure == Failure,
-        O6.Element == Element, O6.Failure == Failure,
-        O7.Element == Element, O7.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure,
+        O4.Failure == Failure,
+        O5.Failure == Failure,
+        O6.Failure == Failure,
+        O7.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),
@@ -263,14 +263,14 @@ extension TreatableSequenceType where Trait == SingleTrait {
         mapError: @escaping (Error) -> Failure
     ) -> TreatableSequence<Trait, Element, Failure>
     where
-        O1.Element == Element, O1.Failure == Failure,
-        O2.Element == Element, O2.Failure == Failure,
-        O3.Element == Element, O3.Failure == Failure,
-        O4.Element == Element, O4.Failure == Failure,
-        O5.Element == Element, O5.Failure == Failure,
-        O6.Element == Element, O6.Failure == Failure,
-        O7.Element == Element, O7.Failure == Failure,
-        O8.Element == Element, O8.Failure == Failure
+        O1.Failure == Failure,
+        O2.Failure == Failure,
+        O3.Failure == Failure,
+        O4.Failure == Failure,
+        O5.Failure == Failure,
+        O6.Failure == Failure,
+        O7.Failure == Failure,
+        O8.Failure == Failure
      {
         TreatableSequence(raw: Observable.zip(
                 source1.asObservable(),

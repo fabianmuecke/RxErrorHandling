@@ -21,38 +21,38 @@
       },
       {
         "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble",
+        "repositoryURL": "https://github.com/mRs-/Nimble",
         "state": {
-          "branch": null,
-          "revision": "2b1809051b4a65c1d7f5233331daa24572cd7fca",
-          "version": "8.1.1"
+          "branch": "Swift5.3",
+          "revision": "a0b0ab7db759ebf72b843f37370ea3da0eb2fb29",
+          "version": null
         }
       },
       {
         "package": "Quick",
-        "repositoryURL": "https://github.com/Quick/Quick",
+        "repositoryURL": "https://github.com/mRs-/Quick",
         "state": {
-          "branch": null,
-          "revision": "09b3becb37cb2163919a3842a4c5fa6ec7130792",
-          "version": "2.2.1"
+          "branch": "Xcode12",
+          "revision": "2f3c2b10ccf1fc854aa25121917120f9f57d4987",
+          "version": null
         }
       },
       {
         "package": "QuickSwiftCheck",
-        "repositoryURL": "https://github.com/akashivskyy/QuickSwiftCheck",
+        "repositoryURL": "https://github.com/mRs-/QuickSwiftCheck",
         "state": {
-          "branch": null,
-          "revision": "c07aed221b8f46620459ceed4f437b99fc3aeffa",
-          "version": "3.1.0"
+          "branch": "develop",
+          "revision": "9a6099daa0fcf99175e95b63b75f8a2baaaa1b0e",
+          "version": null
         }
       },
       {
         "package": "RxNimble",
-        "repositoryURL": "https://github.com/RxSwiftCommunity/RxNimble",
+        "repositoryURL": "https://github.com/fabianmuecke/RxNimble",
         "state": {
-          "branch": null,
-          "revision": "866d3c55dd4a762d4261afca103ad59dd0b1883a",
-          "version": "4.7.2"
+          "branch": "master",
+          "revision": "0e72ac23936ba5e16d52132a093526e80c0081d7",
+          "version": null
         }
       },
       {
@@ -75,7 +75,7 @@
       },
       {
         "package": "SwiftCheck",
-        "repositoryURL": "https://github.com/typelift/SwiftCheck.git",
+        "repositoryURL": "https://github.com/typelift/SwiftCheck",
         "state": {
           "branch": null,
           "revision": "077c096c3ddfc38db223ac8e525ad16ffb987138",
