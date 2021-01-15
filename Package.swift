@@ -23,10 +23,10 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/ReactiveX/RxSwift", .upToNextMajor(from: "5.1.1")),
-        .package(url: "https://github.com/mRs-/Quick", .branch("Xcode12")),
-        .package(url: "https://github.com/mRs-/Nimble", .branch("Swift5.3")),
-        .package(url: "https://github.com/mRs-/QuickSwiftCheck", .branch("develop")),
-        .package(url: "https://github.com/fabianmuecke/RxNimble", .branch("master")),
+        .package(url: "https://github.com/Quick/Nimble", .upToNextMajor(from: "9.0.0")),
+        .package(url: "https://github.com/Quick/Quick", .upToNextMajor(from: "3.0.0")),
+        .package(url: "https://github.com/akashivskyy/QuickSwiftCheck", .upToNextMajor(from: "3.2.0")),
+        .package(url: "https://github.com/mRs-/RxNimble", .branch("master")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
