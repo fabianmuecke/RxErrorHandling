@@ -1,5 +1,5 @@
 //
-//  PrimitiveSequence+Treatable.swift
+//  PrimitiveSequence+TreatableSequence.swift
 //
 //
 //  Created by Fabian Mücke on 30.07.20.
@@ -9,21 +9,21 @@ import Foundation
 import RxSwift
 
 extension PrimitiveSequence {
-    public func asTreatable() -> TreatableSequence<Trait, Element, Swift.Error> {
+    public func asTreatableSequence() -> TreatableSequence<Trait, Element, Swift.Error> {
         TreatableSequence(raw: asObservable())
     }
 
-    public func asTreatable<Failure>(mapError: @escaping (Error) -> Failure)
+    public func asTreatableSequence<Failure>(mapError: @escaping (Error) -> Failure)
         -> TreatableSequence<Trait, Element, Failure>
     {
         TreatableSequence(raw: asObservable().catchError { .error(mapError($0)) })
     }
 
-    public func asTreatable(onErrorJustReturn element: Element) -> TreatableSequence<Trait, Element, Never> {
+    public func asTreatableSequence(onErrorJustReturn element: Element) -> TreatableSequence<Trait, Element, Never> {
         TreatableSequence(raw: asObservable().catchErrorJustReturn(element))
     }
 
-    public func asTreatable<Failure>(onErrorTreatWith: @escaping (Error) -> TreatableSequence<Trait, Element, Failure>)
+    public func asTreatableSequence<Failure>(onErrorTreatWith: @escaping (Error) -> TreatableSequence<Trait, Element, Failure>)
         -> Treatable<Element, Failure>
     {
         TreatableSequence(raw: asObservable().catchError { error in
@@ -32,7 +32,7 @@ extension PrimitiveSequence {
     }
 
     /// Make sure your source Observable already catches all errors and returns Result.failure instead. Otherwise using this function is unsafe.
-    func asTreatableFromResult<Success, Failure>() -> TreatableSequence<Trait, Success, Failure>
+    func asTreatableSequenceFromResult<Success, Failure>() -> TreatableSequence<Trait, Success, Failure>
         where Element == Swift.Result<Success, Failure>
     {
         TreatableSequence(raw: asObservable().flatMap { (element: Result<Success, Failure>) -> Observable<Success> in
