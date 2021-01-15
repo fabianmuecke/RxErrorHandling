@@ -30,6 +30,10 @@ extension TreatableSequence: TreatableSequenceType {
     public func asObservableResult() -> Observable<Result<Element, Failure>> {
         asObservable().map(Result<Element, Failure>.success).catchError { .just(.failure($0 as! Failure)) }
     }
+
+    public func asTreatable() -> TreatableSequence<TreatableTrait, Element, Failure> {
+        Treatable(raw: asObservable())
+    }
 }
 
 extension TreatableSequence {
@@ -184,7 +188,7 @@ extension TreatableSequenceType {
      - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or is notified to error or complete.
      */
     public func retryWhen<TriggerObservable: ObservableType,
-                          Error: Swift.Error>(_ notificationHandler: @escaping (Observable<Error>) -> TriggerObservable)
+        Error: Swift.Error>(_ notificationHandler: @escaping (Observable<Error>) -> TriggerObservable)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.retryWhen(notificationHandler))
     }
