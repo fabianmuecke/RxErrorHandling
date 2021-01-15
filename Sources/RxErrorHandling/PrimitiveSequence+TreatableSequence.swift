@@ -24,7 +24,7 @@ extension PrimitiveSequence {
     }
 
     public func asTreatableSequence<Failure>(onErrorTreatWith: @escaping (Error) -> TreatableSequence<Trait, Element, Failure>)
-        -> Treatable<Element, Failure>
+        -> TreatableSequence<Trait, Element, Failure>
     {
         TreatableSequence(raw: asObservable().catchError { error in
             onErrorTreatWith(error).asObservable()
