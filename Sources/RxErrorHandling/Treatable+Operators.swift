@@ -39,36 +39,6 @@ extension TreatableSequenceType where Trait == TreatableTrait {
     }
 }
 
-// MARK: catchError
-
-extension TreatableSequenceType where Trait == TreatableTrait {
-    /**
-     Continues an observable sequence that is terminated by an error with the observable sequence produced by the handler.
-
-     - seealso: [catch operator on reactivex.io](http://reactivex.io/documentation/operators/catch.html)
-
-     - parameter handler: Error handler function, producing another observable sequence.
-     - returns: An observable sequence containing the source sequence's elements, followed by the elements produced by the handler's resulting observable sequence in case an error occurred.
-     */
-    public func catchError(_ handler: @escaping (Failure) -> Treatable<Element, Never>)
-        -> Treatable<Element, Never> {
-        Treatable(raw: asObservable().catchError { error in handler(error as! Failure).asObservable() })
-    }
-
-    /**
-     Continues an observable sequence that is terminated by an error with a single element.
-
-     - seealso: [catch operator on reactivex.io](http://reactivex.io/documentation/operators/catch.html)
-
-     - parameter element: Last element in an observable sequence in case error occurs.
-     - returns: An observable sequence containing the source sequence's elements, followed by the `element` in case an error occurred.
-     */
-    public func catchErrorJustReturn(_ element: Element)
-        -> Treatable<Element, Never> {
-        Treatable(raw: asObservable().catchErrorJustReturn(element))
-    }
-}
-
 // MARK: compactMap
 
 extension TreatableSequenceType where Trait == TreatableTrait {

@@ -267,7 +267,41 @@ extension TreatableSequenceType {
     }
 }
 
-extension TreatableSequence where Trait == TreatableTrait {
+// MARK: catchError
+
+public extension TreatableSequence
+{
+    /**
+     Continues an observable sequence that is terminated by an error with the observable sequence produced by the handler.
+
+     - seealso: [catch operator on reactivex.io](http://reactivex.io/documentation/operators/catch.html)
+
+     - parameter handler: Error handler function, producing another observable sequence.
+     - returns: An observable sequence containing the source sequence's elements, followed by the elements produced by the handler's resulting observable sequence in case an error occurred.
+     */
+    func catchError<NewFailure: Swift.Error>(_ handler: @escaping (Failure) -> TreatableSequence<Trait, Element, NewFailure>)
+        -> TreatableSequence<Trait, Element, NewFailure>
+    {
+        TreatableSequence<Trait, Element, NewFailure>(raw: asObservable().catchError { error in handler(error as! Failure).asObservable() })
+    }
+
+    /**
+     Continues an observable sequence that is terminated by an error with a single element.
+
+     - seealso: [catch operator on reactivex.io](http://reactivex.io/documentation/operators/catch.html)
+
+     - parameter element: Last element in an observable sequence in case error occurs.
+     - returns: An observable sequence containing the source sequence's elements, followed by the `element` in case an error occurred.
+     */
+    func catchErrorJustReturn(_ element: Element)
+        -> TreatableSequence<Trait, Element, Never>
+    {
+        TreatableSequence<Trait, Element, Never>(raw: asObservable().catchErrorJustReturn(element))
+    }
+}
+
+public extension TreatableSequence where Trait == TreatableTrait
+{
     /**
      Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
 
