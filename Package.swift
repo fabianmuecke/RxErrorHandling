@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/Quick/Nimble", .upToNextMajor(from: "9.0.0")),
         .package(url: "https://github.com/Quick/Quick", .upToNextMajor(from: "3.0.0")),
         .package(url: "https://github.com/akashivskyy/QuickSwiftCheck", .upToNextMajor(from: "3.2.0")),
-        .package(url: "https://github.com/mRs-/RxNimble", .revision("37c1d6c6daaef2bc5bbb7fe20ff766542431b9fa")),
+        .package(url: "https://github.com/mRs-/RxNimble", .upToNextMajor(from: "5.0.l")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
