@@ -36,14 +36,14 @@ extension TreatableSequence: TreatableSequenceType {
     }
 }
 
-extension TreatableSequence {
+public extension TreatableSequence {
     /**
      Projects each element of an observable sequence into a new form. Failure is treated as an error.
 
      - parameter transform: A transform function to apply to each source element.
      - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
      */
-    public func mapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>)
+    func mapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>)
         -> TreatableSequence<Trait, NewElement, Failure> {
         let treatable = asObservable().map(transform).asTreatableFromResult()
         return TreatableSequence<Trait, NewElement, Failure>(raw: treatable)
@@ -55,7 +55,7 @@ extension TreatableSequence {
      - parameter transform: A transform function to apply to each source element.
      - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source.
      */
-    public func mapError<NewFailure>(_ transform: @escaping (Failure) -> NewFailure)
+    func mapError<NewFailure>(_ transform: @escaping (Failure) -> NewFailure)
         -> TreatableSequence<Trait, Element, NewFailure> {
         let treatable = asObservable().catchError { .error(transform($0 as! Failure)) }
         return TreatableSequence<Trait, Element, NewFailure>(raw: treatable)
@@ -68,7 +68,7 @@ extension TreatableSequence {
      - returns: An observable sequence whose elements are the result of filtering the transform function for each element of the source.
 
      */
-    public func compactMapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>?)
+    func compactMapResult<NewElement>(_ transform: @escaping (Element) -> Result<NewElement, Failure>?)
         -> TreatableSequence<Trait, NewElement, Failure> {
         let treatable = asObservable().compactMap(transform).asTreatableFromResult()
         return TreatableSequence<Trait, NewElement, Failure>(raw: treatable)
@@ -77,15 +77,15 @@ extension TreatableSequence {
 
 // MARK: Failure type
 
-extension TreatableSequenceType where Failure == Never {
+public extension TreatableSequenceType where Failure == Never {
     // TODO: Have a custom TreatableConvertibleType for non-fallible like apple does, so setFailureType can be called again later?
-    public func setFailureType<NewFailure>(to failureType: NewFailure
+    func setFailureType<NewFailure>(to failureType: NewFailure
         .Type) -> TreatableSequence<Trait, Element, NewFailure> {
         TreatableSequence<Trait, Element, NewFailure>(raw: asObservable())
     }
 }
 
-extension TreatableSequenceType {
+public extension TreatableSequenceType {
     /**
      Returns an observable sequence that invokes the specified factory function whenever a new observer subscribes.
 
@@ -94,7 +94,7 @@ extension TreatableSequenceType {
      - parameter observableFactory: Observable factory function to invoke for each observer that subscribes to the resulting sequence.
      - returns: An observable sequence whose observers trigger an invocation of the given observable factory function.
      */
-    public static func deferred(_ observableFactory: @escaping () throws -> TreatableSequence<Trait, Element, Failure>)
+    static func deferred(_ observableFactory: @escaping () throws -> TreatableSequence<Trait, Element, Failure>)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: Observable.deferred {
             try observableFactory().asObservable()
@@ -110,7 +110,7 @@ extension TreatableSequenceType {
      - parameter scheduler: Scheduler to run the subscription delay timer on.
      - returns: the source Observable shifted in time by the specified delay.
      */
-    public func delay(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
+    func delay(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.delay(dueTime, scheduler: scheduler))
     }
@@ -124,7 +124,7 @@ extension TreatableSequenceType {
      - parameter scheduler: Scheduler to run the subscription delay timer on.
      - returns: Time-shifted sequence.
      */
-    public func delaySubscription(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
+    func delaySubscription(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.delaySubscription(dueTime, scheduler: scheduler))
     }
@@ -140,7 +140,7 @@ extension TreatableSequenceType {
      - parameter scheduler: Scheduler to notify observers on.
      - returns: The source sequence whose observations happen on the specified scheduler.
      */
-    public func observeOn(_ scheduler: ImmediateSchedulerType)
+    func observeOn(_ scheduler: ImmediateSchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.observeOn(scheduler))
     }
@@ -160,7 +160,7 @@ extension TreatableSequenceType {
      - parameter scheduler: Scheduler to perform subscription and unsubscription actions on.
      - returns: The source sequence whose subscriptions and unsubscriptions happen on the specified scheduler.
      */
-    public func subscribeOn(_ scheduler: ImmediateSchedulerType)
+    func subscribeOn(_ scheduler: ImmediateSchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.subscribeOn(scheduler))
     }
@@ -173,7 +173,7 @@ extension TreatableSequenceType {
      - parameter maxAttemptCount: Maximum number of times to attempt the sequence subscription.
      - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully.
      */
-    public func retry(_ maxAttemptCount: Int)
+    func retry(_ maxAttemptCount: Int)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence(raw: treatableSequence.source.retry(maxAttemptCount))
     }
@@ -187,25 +187,15 @@ extension TreatableSequenceType {
      - parameter notificationHandler: A handler that is passed an observable sequence of errors raised by the source observable and returns and observable that either continues, completes or errors. This behavior is then applied to the source observable.
      - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or is notified to error or complete.
      */
-    public func retryWhen<TriggerObservable: ObservableType,
-        Error: Swift.Error>(_ notificationHandler: @escaping (Observable<Error>) -> TriggerObservable)
+    func retryWhen<
+        TriggerTrait,
+        TriggerElement
+    >(_ notificationHandler: @escaping (Treatable<Failure, Never>)
+        -> TreatableSequence<TriggerTrait, TriggerElement, Failure>)
         -> TreatableSequence<Trait, Element, Failure> {
-        TreatableSequence(raw: treatableSequence.source.retryWhen(notificationHandler))
-    }
-
-    /**
-     Repeats the source observable sequence on error when the notifier emits a next value.
-     If the source observable errors and the notifier completes, it will complete the source sequence.
-
-     - seealso: [retry operator on reactivex.io](http://reactivex.io/documentation/operators/retry.html)
-
-     - parameter notificationHandler: A handler that is passed an observable sequence of errors raised by the source observable and returns and observable that either continues, completes or errors. This behavior is then applied to the source observable.
-     - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or is notified to error or complete.
-     */
-    public func retryWhen<TriggerObservable: ObservableType>(_ notificationHandler: @escaping (Observable<Swift.Error>)
-        -> TriggerObservable)
-        -> TreatableSequence<Trait, Element, Failure> {
-        TreatableSequence(raw: treatableSequence.source.retryWhen(notificationHandler))
+        TreatableSequence(raw: treatableSequence.source.retryWhen { errors in
+            notificationHandler(Treatable<Failure, Never>(raw: errors)).asObservable()
+        })
     }
 
     /**
@@ -217,7 +207,7 @@ extension TreatableSequenceType {
      - parameter trimOutput: Should output be trimmed to max 40 characters.
      - returns: An observable sequence whose events are printed to standard output.
      */
-    public func debug(
+    func debug(
         _ identifier: String? = nil,
         trimOutput: Bool = false,
         file: String = #file,
@@ -238,7 +228,7 @@ extension TreatableSequenceType {
      - parameter treatableSequenceFactory: Factory function to obtain an observable sequence that depends on the obtained resource.
      - returns: An observable sequence whose lifetime controls the lifetime of the dependent resource object.
      */
-    public static func using<Resource: Disposable>(
+    static func using<Resource: Disposable>(
         _ resourceFactory: @escaping () throws -> Resource,
         treatableSequenceFactory: @escaping (Resource) throws -> TreatableSequence<Trait, Element, Failure>
     )
@@ -259,9 +249,9 @@ extension TreatableSequenceType {
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: The source sequence switching to the other sequence in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval,
-                        other: TreatableSequence<Trait, Element, Failure>,
-                        scheduler: SchedulerType) -> TreatableSequence<Trait, Element, Failure> {
+    func timeout(_ dueTime: RxTimeInterval,
+                 other: TreatableSequence<Trait, Element, Failure>,
+                 scheduler: SchedulerType) -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence<Trait, Element, Failure>(raw: treatableSequence.source
             .timeout(dueTime, other: other.source, scheduler: scheduler))
     }
@@ -300,8 +290,7 @@ public extension TreatableSequence
     }
 }
 
-public extension TreatableSequence where Trait == TreatableTrait
-{
+public extension TreatableSequence where Trait == TreatableTrait {
     /**
      Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
 
@@ -312,13 +301,13 @@ public extension TreatableSequence where Trait == TreatableTrait
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+    func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         timeout(dueTime, other: .failure(failure), scheduler: scheduler)
     }
 }
 
-extension TreatableSequence where Trait == SingleTrait {
+public extension TreatableSequence where Trait == SingleTrait {
     /**
      Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
 
@@ -329,13 +318,13 @@ extension TreatableSequence where Trait == SingleTrait {
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+    func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         timeout(dueTime, other: .failure(failure), scheduler: scheduler)
     }
 }
 
-extension TreatableSequence where Trait == MaybeTrait {
+public extension TreatableSequence where Trait == MaybeTrait {
     /**
      Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
 
@@ -346,13 +335,13 @@ extension TreatableSequence where Trait == MaybeTrait {
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+    func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         timeout(dueTime, other: .failure(failure), scheduler: scheduler)
     }
 }
 
-extension TreatableSequence where Trait == CompletableTrait, Element == Swift.Never {
+public extension TreatableSequence where Trait == CompletableTrait, Element == Swift.Never {
     /**
      Applies a timeout policy for each element in the observable sequence. If the next element isn't received within the specified timeout duration starting from its predecessor, a TimeoutError is propagated to the observer.
 
@@ -363,13 +352,13 @@ extension TreatableSequence where Trait == CompletableTrait, Element == Swift.Ne
      - parameter scheduler: Scheduler to run the timeout timer on.
      - returns: An observable sequence with a `RxError.timeout` in case of a timeout.
      */
-    public func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
+    func timeout(_ dueTime: RxTimeInterval, failure: Failure, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         timeout(dueTime, other: .failure(failure), scheduler: scheduler)
     }
 }
 
-extension TreatableSequenceType where Element: RxAbstractInteger {
+public extension TreatableSequenceType where Element: RxAbstractInteger {
     /**
      Returns an observable sequence that periodically produces a value after the specified initial relative due time has elapsed, using the specified scheduler to run timers.
 
@@ -379,7 +368,7 @@ extension TreatableSequenceType where Element: RxAbstractInteger {
      - parameter scheduler: Scheduler to run timers on.
      - returns: An observable sequence that produces a value after due time has elapsed and then each period.
      */
-    public static func timer(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
+    static func timer(_ dueTime: RxTimeInterval, scheduler: SchedulerType)
         -> TreatableSequence<Trait, Element, Failure> {
         TreatableSequence<Trait, Element, Failure>(raw: Observable<Element>.timer(dueTime, scheduler: scheduler))
     }
